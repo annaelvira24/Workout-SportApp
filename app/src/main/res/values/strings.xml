@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Workout</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_tracker">Training Tracker</string>
+    <string name="title_news">Sport News</string>
+    <string name="title_history">Training History</string>
+    <string name="title_scheduler">Training Scheduler</string>
 </resources>

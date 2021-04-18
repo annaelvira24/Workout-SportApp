@@ -1,4 +1,4 @@
-package com.example.workout.ui.notifications
+package com.example.workout.ui.history
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.workout.R
 
-class NotificationsFragment : Fragment() {
+class SchedulerFragment : Fragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var schedulerViewModel: SchedulerViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-                ViewModelProvider(this).get(NotificationsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
+        schedulerViewModel =
+                ViewModelProvider(this).get(SchedulerViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_scheduler, container, false)
+        val textView: TextView = root.findViewById(R.id.text_scheduler)
+        schedulerViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

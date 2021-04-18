@@ -1,4 +1,4 @@
-package com.example.workout.ui.dashboard
+package com.example.workout.ui.news
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.workout.R
 
-class DashboardFragment : Fragment() {
+class NewsFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var newsViewModel: NewsViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-                ViewModelProvider(this).get(DashboardViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+        newsViewModel =
+                ViewModelProvider(this).get(NewsViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_news, container, false)
+        val textView: TextView = root.findViewById(R.id.text_news)
+        newsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
