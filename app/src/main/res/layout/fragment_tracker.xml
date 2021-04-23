@@ -6,17 +6,65 @@
     android:layout_height="match_parent"
     tools:context=".ui.tracker.TrackerFragment">
 
-    <TextView
-        android:id="@+id/text_tracker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="208dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="300dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/startBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/cyclingBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
+            android:contentDescription="@string/cycling_btn"
+            android:src="@drawable/ic_tracker_cycling_100"
+            android:tint="#5A5A5A" />
+
+        <ImageButton
+            android:id="@+id/runningBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
+            android:contentDescription="@string/running_btn"
+            android:src="@drawable/ic_tracker_running_100"
+            android:tint="#5A5A5A" />
+    </LinearLayout>
+
+    <ToggleButton
+        android:id="@+id/startBtn"
+        android:layout_width="89dp"
+        android:layout_height="36dp"
+        android:background="#00FFFFFF"
+        android:text="@string/togglebutton"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textColor="#A1000000"
+        android:textOff="@string/start"
+        android:textOn="@string/stop"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.789" />
+
+    <ImageView
+        android:id="@+id/compassImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/compass_img"
+        android:src="@drawable/ic_tracker_compass_150"
+        app:layout_constraintBottom_toTopOf="@+id/startBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

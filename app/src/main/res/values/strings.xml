@@ -6,4 +6,10 @@
     <string name="title_scheduler">Training Scheduler</string>
 
     <string name="api_key">2ac966fbd7a1469085414bf3f663a8e1</string>
+    <string name="cycling_btn">cycling_btn</string>
+    <string name="running_btn">running_btn</string>
+    <string name="togglebutton">ToggleButton</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="compass_img">compass_img</string>
 </resources>
