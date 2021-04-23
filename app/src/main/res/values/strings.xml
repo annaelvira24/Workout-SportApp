@@ -4,4 +4,6 @@
     <string name="title_news">Sport News</string>
     <string name="title_history">Training History</string>
     <string name="title_scheduler">Training Scheduler</string>
+
+    <string name="api_key">2ac966fbd7a1469085414bf3f663a8e1</string>
 </resources>

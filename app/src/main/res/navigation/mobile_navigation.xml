@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_news" />
 
     <fragment
-        android:id="@+id/navigation_track"
+        android:id="@+id/navigation_tracker"
         android:name="com.example.workout.ui.tracker.TrackerFragment"
         android:label="@string/title_tracker"
         tools:layout="@layout/fragment_tracker" />
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/navigation_scheduler"
-        android:name="com.example.workout.ui.history.SchedulerFragment"
+        android:name="com.example.workout.ui.scheduler.SchedulerFragment"
         android:label="@string/title_scheduler"
         tools:layout="@layout/fragment_scheduler" />
 

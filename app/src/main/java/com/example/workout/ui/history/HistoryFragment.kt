@@ -12,7 +12,7 @@ import com.example.workout.R
 
 class HistoryFragment : Fragment() {
 
-    private lateinit var historyViewModel: SchedulerViewModel
+    private lateinit var historyViewModel: HistoryViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -20,7 +20,7 @@ class HistoryFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         historyViewModel =
-                ViewModelProvider(this).get(SchedulerViewModel::class.java)
+                ViewModelProvider(this).get(HistoryViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_history, container, false)
         val textView: TextView = root.findViewById(R.id.text_history)
         historyViewModel.text.observe(viewLifecycleOwner, Observer {

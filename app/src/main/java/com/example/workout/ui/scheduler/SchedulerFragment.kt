@@ -1,4 +1,4 @@
-package com.example.workout.ui.history
+package com.example.workout.ui.scheduler
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.workout.R
+import com.example.workout.ui.history.SchedulerViewModel
 
 class SchedulerFragment : Fragment() {
 
