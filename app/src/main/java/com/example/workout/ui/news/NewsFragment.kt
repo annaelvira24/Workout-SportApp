@@ -1,6 +1,7 @@
 package com.example.workout.ui.news
 
 import android.content.ContentValues.TAG
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,7 +34,14 @@ class NewsFragment : Fragment() {
         val rvView: RecyclerView = root.findViewById(R.id.rvNews)
         val adapter = NewsAdapter()
         rvView.adapter = adapter
-        rvView.layoutManager = LinearLayoutManager(activity)
+
+        if(requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            rvView.layoutManager = GridLayoutManager(activity, 1)
+        }
+        else{
+            println("uyyyy")
+            rvView.layoutManager = GridLayoutManager(activity, 2)
+        }
 
         val country = "id"
         val category = "sports"
