@@ -1,0 +1,21 @@
+package com.example.workout.database
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.google.android.gms.maps.model.LatLng
+import java.sql.Time
+import java.sql.Timestamp
+import java.util.*
+
+@Entity(tableName = "history_table")
+
+class History(
+        @PrimaryKey(autoGenerate = true) val id: Int,
+        @ColumnInfo(name = "exercise_type") val exercise_type: String,
+        @ColumnInfo(name = "date") val date: Date,
+        @ColumnInfo(name = "time_start") val timeStart: Timestamp,
+        @ColumnInfo(name = "time_finish") val timeFinish: Timestamp,
+        @ColumnInfo(name = "measure") val measure: Float,
+        @ColumnInfo(name = "track") val track: List<LatLng>?
+)
