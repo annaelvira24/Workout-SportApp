@@ -39,7 +39,6 @@ class NewsFragment : Fragment() {
             rvView.layoutManager = GridLayoutManager(activity, 1)
         }
         else{
-            println("uyyyy")
             rvView.layoutManager = GridLayoutManager(activity, 2)
         }
 
