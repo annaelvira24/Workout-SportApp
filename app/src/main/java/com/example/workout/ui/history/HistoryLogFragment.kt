@@ -43,7 +43,10 @@ class HistoryLogFragment(var date : String) : Fragment() {
 
         historyViewModel.allLogs.observe(viewLifecycleOwner) { words ->
             // Update the cached copy of the words in the adapter.
-            words.let { adapter.submitList(it) }
+            words.let { adapter.submitList(it)
+            println(it.toString())
+            }
+
         }
 
         return root

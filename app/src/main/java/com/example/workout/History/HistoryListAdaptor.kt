@@ -14,10 +14,14 @@ import kotlinx.android.synthetic.main.history_item.view.*
 
 class HistoryListAdapter : ListAdapter<History, HistoryListAdapter.HistoryViewHolder>(HistoryComparator()) {
     private val mContext: Context? = null
-    private var history = emptyList<History>()
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        holder.bind(history.get(position))
+        val current = getItem(position)
+        holder.bind(current)
+
+//        println(history.get(position).exercise_type)
+//        println(history.get(position).timeStart)
+
 //        holder.view.setOnClickListener() {
 //            val detailIntent = Intent(holder.view.getContext(), NewsDetails::class.java)
 //
@@ -29,7 +33,7 @@ class HistoryListAdapter : ListAdapter<History, HistoryListAdapter.HistoryViewHo
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.news_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.history_item, parent, false)
         return HistoryViewHolder(view)
     }
 
@@ -39,8 +43,9 @@ class HistoryListAdapter : ListAdapter<History, HistoryListAdapter.HistoryViewHo
 
         fun bind(history: History) {
             this.history = history
+            println(history.timeStart)
             view.history_type.text = (history.exercise_type)
-            view.history_time.text = (history.timeStart.toString())
+//            view.history_time.text = (history.timeStart)
         }
     }
 
@@ -54,5 +59,4 @@ class HistoryListAdapter : ListAdapter<History, HistoryListAdapter.HistoryViewHo
         }
     }
 
-    override fun getItemCount() = history.size
 }

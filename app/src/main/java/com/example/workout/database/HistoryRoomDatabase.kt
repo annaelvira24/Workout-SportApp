@@ -4,15 +4,18 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.sql.Date
 import java.sql.Time
 import java.sql.Timestamp
 import java.time.LocalDate
-import java.util.*
 
 @Database(entities = arrayOf(History::class), version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
+
 public abstract class HistoryRoomDatabase : RoomDatabase() {
 
     abstract fun HistoryDao(): HistoryDao
@@ -57,10 +60,9 @@ public abstract class HistoryRoomDatabase : RoomDatabase() {
             // Delete all content here.
 //            wordDao.deleteAll()
 
-            val date = Date(2021, 4, 1)
-            val time = Timestamp(System.currentTimeMillis())
+            val time = Date(System.currentTimeMillis())
             // Add sample words.
-            var history = History(1, "Walking", date, time, time, 10.0f, null)
+            var history = History(1, "Walking", time, time, 10.0f)
             historyDao.insert(history)
 //            word = Word("World!")
 //            wordDao.insert(word)
