@@ -20,7 +20,8 @@ import java.util.Locale
 class SchedulerDetails : AppCompatActivity() {
     private val context: Context? = null
     lateinit var nameEditText: EditText
-    lateinit var timeSchedulePicker : TimePicker
+    lateinit var startTimeSchedulePicker : TimePicker
+    lateinit var finishTimeSchedulePicker : TimePicker
     lateinit var autoStarCheckBox : CheckBox
     lateinit var sun :Button
     lateinit var mon :Button
@@ -33,7 +34,7 @@ class SchedulerDetails : AppCompatActivity() {
     lateinit var updateButton : Button
     lateinit var deleteButton : Button
     private var repeatValue = 0
-    lateinit var button_date: Button
+    lateinit var button_date: ImageButton
     lateinit var textview_date: TextView
     var cal = Calendar.getInstance()
 
@@ -44,11 +45,11 @@ class SchedulerDetails : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.scheduler_details)
 
-
-
         nameEditText = findViewById(R.id.name)
-        timeSchedulePicker =  findViewById(R.id.timeSchedule);
-        timeSchedulePicker.setIs24HourView(true);
+        startTimeSchedulePicker =  findViewById(R.id.startTimeSchedule);
+        startTimeSchedulePicker.setIs24HourView(true);
+        finishTimeSchedulePicker =  findViewById(R.id.finishTimeSchedule);
+        finishTimeSchedulePicker.setIs24HourView(true);
         autoStarCheckBox = findViewById(R.id.AutoStartcheckBox)
         addButton = findViewById(R.id.btnAdd)
         updateButton = findViewById(R.id.btnUpdate)
