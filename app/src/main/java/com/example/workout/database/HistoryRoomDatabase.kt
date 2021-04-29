@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import java.sql.Date
 import java.sql.Time
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 
 @Database(entities = arrayOf(History::class), version = 1, exportSchema = false)
@@ -58,14 +59,18 @@ public abstract class HistoryRoomDatabase : RoomDatabase() {
 
         suspend fun populateDatabase(historyDao: HistoryDao) {
             // Delete all content here.
-//            wordDao.deleteAll()
+            historyDao.deleteAll()
 
-            val time = Date(System.currentTimeMillis())
-            // Add sample words.
-            var history = History(1, "Walking", time, time, 10.0f)
+            val format = SimpleDateFormat("yyyy-MM-dd")
+            val date = format.format(Date(System.currentTimeMillis()))
+            val time = Timestamp(System.currentTimeMillis())
+            println(time)
+            // Add dummy data
+            var history = History(0,"Walking", date, time, time, 10.0f)
             historyDao.insert(history)
-//            word = Word("World!")
-//            wordDao.insert(word)
+
+            history = History(0,"Walking", "2021-04-28", time, time, 1000.0f)
+            historyDao.insert(history)
 
         }
     }

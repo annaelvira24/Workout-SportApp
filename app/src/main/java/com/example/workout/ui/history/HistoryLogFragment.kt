@@ -16,20 +16,23 @@ import com.example.workout.History.HistoryListAdapter
 import com.example.workout.R
 import com.example.workout.WorkoutApplication
 import com.example.workout.retrofitclient.*
+import java.sql.Date
 
-class HistoryLogFragment(var date : String) : Fragment() {
+class HistoryLogFragment(var date : String, var dateUnformatted : String) : Fragment() {
 //    private lateinit var logs : ArrayList<News>
     private lateinit var dateView: TextView
     private val newWordActivityRequestCode = 1
     private val historyViewModel: HistoryViewModel by viewModels {
-        HistoryViewModelFactory((activity?.application as WorkoutApplication).repository)
+        HistoryViewModelFactory((activity?.application as WorkoutApplication).historyDao)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val root = inflater.inflate(R.layout.history_logs, container, false)
         val rvView: RecyclerView = root.findViewById(R.id.rvHistory)
 
@@ -37,15 +40,16 @@ class HistoryLogFragment(var date : String) : Fragment() {
         dateView.text = date
 
         val adapter = HistoryListAdapter()
+        adapter.setDate(date)
         rvView.adapter = adapter
 
         rvView.layoutManager = LinearLayoutManager(activity)
 
-        historyViewModel.allLogs.observe(viewLifecycleOwner) { words ->
+
+        println(dateUnformatted)
+        historyViewModel.getHistoryByDate(dateUnformatted).observe(viewLifecycleOwner) { logs ->
             // Update the cached copy of the words in the adapter.
-            words.let { adapter.submitList(it)
-            println(it.toString())
-            }
+            logs.let { adapter.submitList(it) }
 
         }
 
