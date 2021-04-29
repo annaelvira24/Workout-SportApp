@@ -53,16 +53,10 @@ class HistoryFragment : Fragment() {
             detailIntent.putExtra("date", date);
             detailIntent.putExtra("dateUnformatted", selectedDate);
 
-
-
-
             activity?.startActivity(detailIntent);
-//            val fragment: Fragment = HistoryLogFragment(date)
-//            val fragmentManager: FragmentManager? = fragmentManager
-//            fragmentManager!!.beginTransaction().replace(R.id.history_container, fragment).commit()
         }
 
-        dateView.text = formatter.format(current)
+        dateView.text = "Select a date"
 
 
         return root

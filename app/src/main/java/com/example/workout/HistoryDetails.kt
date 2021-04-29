@@ -1,13 +1,14 @@
 package com.example.workout
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
-import android.webkit.WebChromeClient
-import android.webkit.WebView
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.example.workout.ui.history.EmptyTempFragment
 import com.example.workout.ui.history.HistoryLogFragment
-import java.sql.Date
-import kotlin.properties.Delegates
+
 
 class HistoryDetails : AppCompatActivity() {
     private val context: Context? = null
@@ -26,9 +27,22 @@ class HistoryDetails : AppCompatActivity() {
 
 
 
+
         setTitle(title);
 
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            val frameLayout1 = findViewById<FrameLayout>(R.id.fragmentContainer2)
+            var lParams: LinearLayout.LayoutParams? = frameLayout1.getLayoutParams() as LinearLayout.LayoutParams?
+            lParams?.weight = 0f
+
+        }
         supportFragmentManager!!.beginTransaction()
-            .add(R.id.fragmentContainer, HistoryLogFragment(date, dateUnformatted), "HistoryLogFragment").commit()
+                .add(R.id.fragmentContainer, HistoryLogFragment(date, dateUnformatted), "HistoryLogFragment").commit()
+
+        supportFragmentManager!!.beginTransaction()
+                .add(R.id.fragmentContainer2, EmptyTempFragment(), "HistoryLogFragment").commit()
+
+
+
     }
 }

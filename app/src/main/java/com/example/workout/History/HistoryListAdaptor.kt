@@ -39,6 +39,10 @@ class HistoryListAdapter : ListAdapter<History, HistoryListAdapter.HistoryViewHo
                 val fragment: Fragment = HistoryLogFragment2(current)
                 appCompatActivity.supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit()
             }
+            else{
+                val fragment: Fragment = HistoryLogFragment2(current)
+                appCompatActivity.supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer2, fragment).commit()
+            }
 
         }
     }
