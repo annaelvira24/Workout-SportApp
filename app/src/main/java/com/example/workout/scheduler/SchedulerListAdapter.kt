@@ -1,7 +1,9 @@
 package com.example.workout.scheduler
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +20,8 @@ import kotlinx.android.synthetic.main.history_item.view.*
 import kotlinx.android.synthetic.main.schedule_item.view.*
 import java.sql.Time
 
-class SchedulerListAdapter : ListAdapter<Schedule, SchedulerListAdapter.ScheduleViewHolder>(
+class SchedulerListAdapter(private val listener: (Schedule) -> Unit
+)  : ListAdapter<Schedule, SchedulerListAdapter.ScheduleViewHolder>(
         ScheduleComparator()
 ) {
     private val mContext: Context? = null
@@ -31,6 +34,9 @@ class SchedulerListAdapter : ListAdapter<Schedule, SchedulerListAdapter.Schedule
     override fun onBindViewHolder(holder: ScheduleViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current)
+        holder.itemView.setOnClickListener {
+            listener(current)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScheduleViewHolder {

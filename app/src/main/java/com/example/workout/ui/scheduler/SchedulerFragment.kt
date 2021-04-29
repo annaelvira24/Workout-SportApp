@@ -42,7 +42,21 @@ class SchedulerFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_scheduler, container, false)
         val rvView: RecyclerView = root.findViewById(R.id.rvSchedule)
 
-        val adapter = SchedulerListAdapter()
+        val adapter = SchedulerListAdapter({
+            val detailIntent = Intent(activity, SchedulerDetails::class.java)
+            detailIntent.putExtra("title", "Edit Schedule")
+            //To Do
+            detailIntent.putExtra("id", it.id)
+            detailIntent.putExtra("exercise_type", it.exercise_type)
+            detailIntent.putExtra("date", it.date)
+            detailIntent.putExtra("timeStart", it.timeStart)
+            detailIntent.putExtra("timeFinish", it.timeFinish)
+            detailIntent.putExtra("repeat", it.repeat)
+            detailIntent.putExtra("autoTrack", it.autoTrack)
+            detailIntent.putExtra("measure",it.measure)
+
+            activity!!.startActivity(detailIntent);
+        })
         rvView.adapter = adapter
 //
         rvView.layoutManager = LinearLayoutManager(activity)
@@ -52,6 +66,7 @@ class SchedulerFragment : Fragment() {
             logs.let { adapter.submitList(it) }
 
         }
+
 
 //        val root = inflater.inflate(R.layout.fragment_scheduler, container, false)
 //        schedulerListView = root.findViewById<ListView>(R.id.listSchedulerView)

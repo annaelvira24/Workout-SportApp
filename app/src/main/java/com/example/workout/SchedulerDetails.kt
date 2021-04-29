@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 
 import android.widget.*
@@ -96,6 +97,16 @@ class SchedulerDetails: AppCompatActivity() {
 
         if(intent.hasExtra("id")){
             //ini buat yang udah ada. Klo Klik list viewnya
+            isCycling = intent.getStringExtra("exercise_type") == "Cycling"
+            if(!isCycling){
+                ImageViewCompat.setImageTintList(runningButton, checkedTintList)
+                ImageViewCompat.setImageTintList(cyclingButton, previousTintList)
+                targetText.setHint("Steps Target")
+            }
+//            targetText.text = Editable.Factory.getInstance().newEditable(intent.getStringExtra("measure"))
+            //autoStarCheckBox.isChecked =  intent.getBooleanExtra("autoTrack")
+
+
         }else{
             updateButton.visibility = View.GONE
             deleteButton.visibility = View.GONE
