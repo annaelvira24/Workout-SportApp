@@ -1,66 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="15dp"
+    tools:context=".SchedulerDetails">
 
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name"/>
+    <TimePicker
+        android:id="@+id/timeSchedule"
+        android:layout_width="375dp"
+        android:layout_height="147dp"
+        android:timePickerMode="spinner" />
 
-    <EditText
-        android:id="@+id/hour"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Hour"
-        android:inputType="number"/>
-
-    <EditText
-        android:id="@+id/minute"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Minute"
-        android:inputType="number"/>
 
     <CalendarView
         android:id="@+id/dateSchedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
-    <CheckBox
-        android:id="@+id/checkBox"
+    <TextView
+        android:id="@+id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Auto Start" />
+        android:text="Repeated Day :"
+        android:textColor="@color/teal_700" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/sundayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:selectAllOnFocus="false"
+            android:text="S"
+            android:textColor="@color/teal_200"
+            android:textColorLink="#FFFFFF" />
+
+        <Button
+            android:id="@+id/mondayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:text="M"
+            android:textColor="@color/teal_200"
+            app:strokeColor="@color/white" />
+
+        <Button
+            android:id="@+id/tuesdayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:text="T"
+            android:textColor="@color/teal_200" />
+
+        <Button
+            android:id="@+id/wednesdayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:text="W"
+            android:textColor="@color/teal_200" />
+
+        <Button
+            android:id="@+id/thursdayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:text="T"
+            android:textColor="@color/teal_200" />
+
+        <Button
+            android:id="@+id/fridayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:text="F"
+            android:textColor="@color/teal_200" />
+
+        <Button
+            android:id="@+id/saturdayButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:text="S"
+            android:textColor="@color/teal_200" />
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:hint="Exercise Name"
+        android:inputType="text" />
+
+    <CheckBox
+        android:id="@+id/AutoStartcheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:text="@string/auto_start" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add"
-            android:onClick="add"/>
+            android:text="@string/add" />
 
         <Button
             android:id="@+id/btnUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Update"
-            android:onClick="update"/>
+            android:layout_marginLeft="10dp"
+            android:text="@string/update" />
+
         <Button
             android:id="@+id/btnDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete"
-            android:onClick="delete"/>
+            android:layout_marginLeft="10dp"
+            android:text="@string/delete" />
+
     </LinearLayout>
 
 

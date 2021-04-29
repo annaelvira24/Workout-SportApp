@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".ui.scheduler.SchedulerFragment">
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/listSchedulerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginBottom="80dp"
+        />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addNewScheduleButton"
         style="@style/Widget.MaterialComponents.FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="60dp"
+        android:layout_marginRight="30dp"
         android:layout_marginBottom="100dp"
+        app:backgroundTint="#E91E63"
         app:srcCompat="@android:drawable/ic_input_add"
-        app:tint="#FFFFFF"
-        app:backgroundTint="#E91E63"/>
+        app:tint="#FFFFFF" />
 
 </RelativeLayout>
