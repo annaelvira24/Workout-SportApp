@@ -9,14 +9,14 @@ import kotlinx.coroutines.flow.Flow
 import java.sql.Date
 
 @Dao
-interface HistoryDao {
+interface ScheduleDao {
 
-    @Query("SELECT * FROM history_table WHERE date LIKE :dateInput ORDER BY id ASC")
-    fun getHistoryOnDate(dateInput: String): LiveData<List<History>>
+    @Query("SELECT * FROM schedule_table ORDER BY id ASC")
+    fun getAllSchedule(): LiveData<List<Schedule>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(history: History)
+    suspend fun insert(schedule: Schedule)
 
-    @Query("DELETE FROM history_table")
+    @Query("DELETE FROM schedule_table")
     suspend fun deleteAll()
 }

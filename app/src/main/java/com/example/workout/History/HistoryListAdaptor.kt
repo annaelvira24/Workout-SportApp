@@ -1,6 +1,7 @@
 package com.example.workout.History
 
 import android.content.Context
+import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,26 +32,14 @@ class HistoryListAdapter : ListAdapter<History, HistoryListAdapter.HistoryViewHo
         holder.bind(current)
 
 
-//        println(history.get(position).exercise_type)
-//        println(history.get(position).timeStart)
-
         holder.view.setOnClickListener() {
             val appCompatActivity = it.context as AppCompatActivity
 
-            val fragment: Fragment = HistoryLogFragment2(current)
+            if(appCompatActivity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                val fragment: Fragment = HistoryLogFragment2(current)
+                appCompatActivity.supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit()
+            }
 
-//            supportFragmentManager!!.beginTransaction()
-//                .add(R.id.fragmentContainer, HistoryLogFragment(date, dateUnformatted), "HistoryLogFragment").commit(
-//            val fragmentManager: FragmentManager? = fragmentManager
-            appCompatActivity.supportFragmentManager.beginTransaction().replace(R.id.fragmentContainer, fragment).commit()
-//            val activity = holder.view.context
-//            activity.getSupportFragmentbeginTransaction().replace(R.id.fragmentContainer, fragment).commit()
-//            val detailIntent = Intent(holder.view.getContext(), NewsDetails::class.java)
-//
-//            detailIntent.putExtra("title", "Read Sport News");
-//            detailIntent.putExtra("url", news.get(position).url.toString());
-
-//            holder.view.getContext().startActivity(detailIntent);
         }
     }
 

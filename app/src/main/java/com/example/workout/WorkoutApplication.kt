@@ -12,4 +12,6 @@ class WorkoutApplication : Application() {
     // rather than when the application starts
     val database by lazy { HistoryRoomDatabase.getDatabase(this, applicationScope) }
     val historyDao by lazy { database.HistoryDao() }
+    val scheduleDao by lazy { database.ScheduleDao() }
+
 }

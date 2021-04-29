@@ -12,8 +12,8 @@ class Converters {
     }
 
     @TypeConverter
-    fun fromTimestampToDate2(value: Long?): Date? {
-        return value?.let { Date(it) }
+    fun fromTime(value: Long?): Time? {
+        return value?.let { Time(it) }
     }
 
     @TypeConverter
@@ -22,7 +22,7 @@ class Converters {
     }
 
     @TypeConverter
-    fun dateToTimestamp2(date: Date?): Long? {
-        return date?.time?.toLong()
+    fun timeToTimestamp(time: Time?): Long? {
+        return time?.time?.toLong()
     }
 }
