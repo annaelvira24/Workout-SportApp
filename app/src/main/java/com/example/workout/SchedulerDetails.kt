@@ -15,8 +15,7 @@ import com.example.workout.ui.history.HistoryLogFragment
 class SchedulerDetails : AppCompatActivity() {
     private val context: Context? = null
     lateinit var nameEditText: EditText
-    lateinit var hourEditText: EditText
-    lateinit var minuteEditText: EditText
+    lateinit var timeSchedulePicker : TimePicker
     lateinit var scheduleCalendar: CalendarView
     lateinit var autoStarCheckBox : CheckBox
     lateinit var sun :Button
@@ -39,8 +38,8 @@ class SchedulerDetails : AppCompatActivity() {
         setContentView(R.layout.scheduler_details)
 
         nameEditText = findViewById(R.id.name)
-        hourEditText = findViewById(R.id.hour)
-        minuteEditText = findViewById(R.id.minute)
+        timeSchedulePicker =  findViewById(R.id.timeSchedule);
+        timeSchedulePicker.setIs24HourView(true);
         scheduleCalendar = findViewById(R.id.dateSchedule)
         autoStarCheckBox = findViewById(R.id.AutoStartcheckBox)
         addButton = findViewById(R.id.btnAdd)
