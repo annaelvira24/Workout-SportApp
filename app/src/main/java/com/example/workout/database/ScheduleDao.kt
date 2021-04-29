@@ -14,6 +14,9 @@ interface ScheduleDao {
     @Query("SELECT * FROM schedule_table ORDER BY id ASC")
     fun getAllSchedule(): LiveData<List<Schedule>>
 
+    @Query("SELECT * FROM schedule_table WHERE id = :id")
+    fun getSchedule(id: Int): Schedule
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(schedule: Schedule)
 

@@ -1,23 +1,33 @@
 package com.example.workout
 
-import android.app.ActionBar
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.ImageViewCompat
+import com.example.workout.database.Schedule
+import com.example.workout.database.ScheduleDao
+import com.example.workout.ui.history.ScheduleViewModelFactory
+import com.example.workout.ui.history.SchedulerViewModel
 import kotlinx.android.synthetic.main.fragment_tracker.*
+import kotlinx.android.synthetic.main.history_logs2.view.*
+import kotlinx.coroutines.launch
+import java.lang.System.currentTimeMillis
+import java.sql.Time
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class SchedulerDetails : AppCompatActivity() {
+class SchedulerDetails: AppCompatActivity() {
+    private val schedulerViewModel: SchedulerViewModel by viewModels {
+        ScheduleViewModelFactory((application as WorkoutApplication).scheduleDao)
+    }
     private val context: Context? = null
     lateinit var nameEditText: EditText
     lateinit var targetText: EditText
@@ -41,6 +51,7 @@ class SchedulerDetails : AppCompatActivity() {
     lateinit var textview_date: TextView
     var cal = Calendar.getInstance()
     private var isCycling = true
+    private var choosenDate = ""
 
 
 
@@ -92,6 +103,16 @@ class SchedulerDetails : AppCompatActivity() {
 
         addButton.setOnClickListener {
             //To Do
+            val time = Time(currentTimeMillis())
+            val startTime = Time(startTimeSchedulePicker.hour,startTimeSchedulePicker.minute,0)
+            val finishTime = Time(finishTimeSchedulePicker.hour,finishTimeSchedulePicker.minute,0)
+            val exercise_type = if (isCycling) "Cycling" else "Walking"
+
+
+
+//            val schedule = Schedule(exercise_type, choosenDate, time  , time, repeatValue.toString(), autoStarCheckBox.isChecked,targetText.text.toString().toFloat())
+            val schedule = Schedule(exercise_type, choosenDate, startTime  , finishTime, repeatValue.toString().padStart(7,'0'), autoStarCheckBox.isChecked,targetText.text.toString().toFloat())
+            schedulerViewModel.insert(schedule)
             finish()
         }
         updateButton.setOnClickListener {
@@ -224,8 +245,11 @@ class SchedulerDetails : AppCompatActivity() {
         })
     }
 
+
     private fun updateDateInView() {
-        val myFormat = "MM/dd/yyyy" // mention the format you need
+        val format = "yyyy-MM-dd"
+        choosenDate = SimpleDateFormat(format, Locale.US).format(cal.getTime())
+        val myFormat = "dd/MM/yyyy" // mention the format you need
         val sdf = SimpleDateFormat(myFormat, Locale.US)
         textview_date.text = sdf.format(cal.getTime())
     }

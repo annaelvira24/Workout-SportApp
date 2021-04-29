@@ -192,7 +192,7 @@
         android:layout_height="61dp"
         android:ems="10"
         android:hint="Km Taget"
-        android:inputType="number" />
+        android:inputType="numberDecimal" />
 
     <CheckBox
         android:id="@+id/AutoStartcheckBox"

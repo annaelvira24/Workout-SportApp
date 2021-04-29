@@ -19,4 +19,6 @@ class Schedule(
     @ColumnInfo(name = "repeat") val repeat: String?,
     @ColumnInfo(name = "auto_track") val autoTrack: Boolean,
     @ColumnInfo(name = "target") val measure: Float
-)
+){
+    constructor(exercise_type: String,date: String,timeStart: Time,timeFinish: Time,repeat: String?,autoTrack: Boolean,measure: Float): this(0, exercise_type,date,timeStart,timeFinish,repeat,autoTrack,measure)
+}
