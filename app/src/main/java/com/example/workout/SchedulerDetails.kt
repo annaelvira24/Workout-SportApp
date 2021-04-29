@@ -11,12 +11,17 @@ import android.webkit.WebView
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.workout.ui.history.HistoryLogFragment
+import android.app.DatePickerDialog
+import android.widget.DatePicker
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class SchedulerDetails : AppCompatActivity() {
     private val context: Context? = null
     lateinit var nameEditText: EditText
-    lateinit var timeSchedulePicker : TimePicker
-    lateinit var scheduleCalendar: CalendarView
+    lateinit var startTimeSchedulePicker : TimePicker
+    lateinit var finishTimeSchedulePicker : TimePicker
     lateinit var autoStarCheckBox : CheckBox
     lateinit var sun :Button
     lateinit var mon :Button
@@ -29,6 +34,9 @@ class SchedulerDetails : AppCompatActivity() {
     lateinit var updateButton : Button
     lateinit var deleteButton : Button
     private var repeatValue = 0
+    lateinit var button_date: ImageButton
+    lateinit var textview_date: TextView
+    var cal = Calendar.getInstance()
 
 
 
@@ -38,9 +46,10 @@ class SchedulerDetails : AppCompatActivity() {
         setContentView(R.layout.scheduler_details)
 
         nameEditText = findViewById(R.id.name)
-        timeSchedulePicker =  findViewById(R.id.timeSchedule);
-        timeSchedulePicker.setIs24HourView(true);
-        scheduleCalendar = findViewById(R.id.dateSchedule)
+        startTimeSchedulePicker =  findViewById(R.id.startTimeSchedule);
+        startTimeSchedulePicker.setIs24HourView(true);
+        finishTimeSchedulePicker =  findViewById(R.id.finishTimeSchedule);
+        finishTimeSchedulePicker.setIs24HourView(true);
         autoStarCheckBox = findViewById(R.id.AutoStartcheckBox)
         addButton = findViewById(R.id.btnAdd)
         updateButton = findViewById(R.id.btnUpdate)
@@ -52,6 +61,12 @@ class SchedulerDetails : AppCompatActivity() {
         thu = findViewById(R.id.thursdayButton)
         fri = findViewById(R.id.fridayButton)
         sat = findViewById(R.id.saturdayButton)
+        textview_date = findViewById(R.id.viewDate)
+        button_date = findViewById(R.id.buttonDate)
+
+        textview_date!!.text = "--/--/----"
+
+
         val previousTintList = ColorStateList.valueOf(Color.parseColor("#FFFFFFFF"))
         val previousTextColor = mon.currentTextColor
         val checkedTintList = ColorStateList.valueOf(Color.parseColor("#FF03DAC5"))
@@ -160,8 +175,39 @@ class SchedulerDetails : AppCompatActivity() {
             }
         }
 
+        // create an OnDateSetListener
+        val dateSetListener = object : DatePickerDialog.OnDateSetListener {
+            override fun onDateSet(view: DatePicker, year: Int, monthOfYear: Int,
+                                   dayOfMonth: Int) {
+                cal.set(Calendar.YEAR, year)
+                cal.set(Calendar.MONTH, monthOfYear)
+                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                updateDateInView()
+            }
+        }
 
+        // when you click on the button, show DatePickerDialog that is set with OnDateSetListener
+        button_date.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View) {
+                DatePickerDialog(this@SchedulerDetails,
+                        dateSetListener,
+                        // set DatePickerDialog to point to today's date when it loads up
+                        cal.get(Calendar.YEAR),
+                        cal.get(Calendar.MONTH),
+                        cal.get(Calendar.DAY_OF_MONTH)).show()
+            }
 
-
+        })
     }
+
+    private fun updateDateInView() {
+        val myFormat = "MM/dd/yyyy" // mention the format you need
+        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        textview_date.text = sdf.format(cal.getTime())
+    }
+
+
+
+
+
 }
