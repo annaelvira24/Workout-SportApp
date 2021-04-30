@@ -233,6 +233,7 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
     private fun selectExercise() {
         cycling.setOnClickListener {
             Timber.d("Cycling")
+            exerciseType = "Cycling"
             ImageViewCompat.setImageTintList(
                     cycling,
                     ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
@@ -252,6 +253,7 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
 
         running.setOnClickListener {
             Timber.d("Running")
+            exerciseType = "Walking"
             ImageViewCompat.setImageTintList(
                     running,
                     ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
