@@ -17,7 +17,7 @@ class AlarmService(private val context: Context) {
             context.getSystemService(Context.ALARM_SERVICE) as AlarmManager?
 
 
-    fun setExactAlarm(timeInMillis: Long, exercise_type : String, target: String) {
+    fun setExactAlarm(timeInMillis: Long, finish : Long, exercise_type : String, target: String) {
         setAlarm(
                 timeInMillis,
                 getPendingIntent(
@@ -26,13 +26,28 @@ class AlarmService(private val context: Context) {
                             putExtra(Constants.EXTRA_EXACT_ALARM_TIME, timeInMillis)
                             putExtra(Constants.EXERCISE_TYPE, exercise_type)
                             putExtra(Constants.TARGET,target)
+                            putExtra(Constants.FINISH,finish)
                         }
                 )
         )
     }
 
+    fun setDoneAlarm(timeInMillis: Long, exercise_type : String) {
+        setAlarm(
+            timeInMillis,
+            getPendingIntent(
+                getSecondIntent().apply {
+                    action = Constants.ACTION_SET_EXACT
+                    putExtra(Constants.EXTRA_EXACT_ALARM_TIME, timeInMillis)
+                    putExtra(Constants.EXERCISE_TYPE, exercise_type)
+
+                }
+            )
+        )
+    }
+
     //1 Week
-    fun setRepetitiveAlarm(timeInMillis: Long, exercise_type : String, target: String) {
+    fun setRepetitiveAlarm(timeInMillis: Long,finish : Long, exercise_type : String, target: String) {
         setAlarm(
                 timeInMillis,
                 getPendingIntent(
@@ -41,10 +56,44 @@ class AlarmService(private val context: Context) {
                             putExtra(Constants.EXTRA_EXACT_ALARM_TIME, timeInMillis)
                             putExtra(Constants.EXERCISE_TYPE, exercise_type)
                             putExtra(Constants.TARGET,target)
+                            putExtra(Constants.FINISH,finish)
                         }
                 )
         )
     }
+
+    fun setRepetitiveAlarmOnDays(calendar: Calendar, finishDate: Calendar, exercise_type : String, target: String, repeat:Int) {
+        val day = calendar.get(Calendar.DAY_OF_WEEK)
+
+        do {
+            if(repeat>=1000000 && calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
+                setRepetitiveAlarm(calendar.timeInMillis,finishDate.timeInMillis , exercise_type,target)
+            }
+            else if(repeat%1000000>=100000 && calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY){
+                setRepetitiveAlarm(calendar.timeInMillis,finishDate.timeInMillis , exercise_type,target)
+            }
+            else if(repeat%100000>=10000&& calendar.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY){
+                setRepetitiveAlarm(calendar.timeInMillis,finishDate.timeInMillis , exercise_type,target)
+            }
+            else if(repeat%10000>=1000&& calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY){
+                setRepetitiveAlarm(calendar.timeInMillis,finishDate.timeInMillis , exercise_type,target)
+            }
+            else if(repeat%1000>=100 && calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY){
+                setRepetitiveAlarm(calendar.timeInMillis,finishDate.timeInMillis , exercise_type,target)
+            }
+            else if(repeat%100>=10 && calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY){
+                setRepetitiveAlarm(calendar.timeInMillis,finishDate.timeInMillis , exercise_type,target)
+            }
+            else if(repeat%10>=1 && calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY){
+                setRepetitiveAlarm(calendar.timeInMillis,finishDate.timeInMillis , exercise_type,target)
+            }
+            calendar.add(Calendar.DATE,1)
+            finishDate.add(Calendar.DATE,1)
+
+        }while(day != calendar.get(Calendar.DAY_OF_WEEK))
+
+    }
+
 
     private fun getPendingIntent(intent: Intent) =
             PendingIntent.getBroadcast(
@@ -74,6 +123,7 @@ class AlarmService(private val context: Context) {
     }
 
     private fun getIntent() = Intent(context, AlarmReceiver::class.java)
+    private fun getSecondIntent() = Intent(context, AlarmReceiverDone::class.java)
 
     private fun getRandomRequestCode() = RandomUtil.getRandomInt()
 
