@@ -6,22 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.workout.History.HistoryListAdapter
-import com.example.workout.HistoryDetails
 import com.example.workout.R
 import com.example.workout.SchedulerDetails
 import com.example.workout.WorkoutApplication
 import com.example.workout.scheduler.SchedulerListAdapter
-import com.example.workout.ui.history.HistoryViewModel
-import com.example.workout.ui.history.HistoryViewModelFactory
-import com.example.workout.ui.history.ScheduleViewModelFactory
-import com.example.workout.ui.history.SchedulerViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class SchedulerFragment : Fragment() {

@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Workout</string>
-    <string name="title_tracker">Training Tracker</string>
+    <string name="title_tracker">Tracker</string>
     <string name="title_news">Sport News</string>
-    <string name="title_history">Training History</string>
-    <string name="title_scheduler">Training Scheduler</string>
+    <string name="title_history">History</string>
+    <string name="title_scheduler">Scheduler</string>
 
     <string name="api_key">2ac966fbd7a1469085414bf3f663a8e1</string>
     <string name="cycling_btn">cycling_btn</string>

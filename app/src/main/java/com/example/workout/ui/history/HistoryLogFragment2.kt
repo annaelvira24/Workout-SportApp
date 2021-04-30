@@ -35,11 +35,11 @@ class HistoryLogFragment2(var history: History ) : Fragment() {
             root = inflater.inflate(R.layout.history_logs2, container, false)
 
             dateView = root.findViewById<TextView>(R.id.dateNow2)
-            root.findViewById<TextView>(R.id.type).text = "Exercise : " + history.exercise_type
-            dateView.text = "Date : " + history.date
+            root.findViewById<TextView>(R.id.type).text = "Exercise | " + history.exercise_type
+            dateView.text = "Date | " + history.date
 
             root.findViewById<TextView>(R.id.time).text =
-                "Time : " + (Time(history.timeStart.time).toString() + " - " + Time(history.timeFinish.time).toString())
+                "Time | " + (Time(history.timeStart.time).toString() + " - " + Time(history.timeFinish.time).toString())
 
             root.findViewById<TextView>(R.id.measure).text = history.measure.toInt().toString()
         }
@@ -47,11 +47,11 @@ class HistoryLogFragment2(var history: History ) : Fragment() {
             root = inflater.inflate(R.layout.history_logs3, container, false)
 
             dateView = root.findViewById<TextView>(R.id.dateNow2)
-            root.findViewById<TextView>(R.id.type).text = "Exercise : " + history.exercise_type
-            dateView.text = "Date : " + history.date
+            root.findViewById<TextView>(R.id.type).text = "Exercise | " + history.exercise_type
+            dateView.text = "Date | " + history.date
 
             root.findViewById<TextView>(R.id.time).text =
-                    "Time : " + (Time(history.timeStart.time).toString() + " - " + Time(history.timeFinish.time).toString())
+                    "Time | " + (Time(history.timeStart.time).toString() + " - " + Time(history.timeFinish.time).toString())
 
             root.findViewById<TextView>(R.id.measure).text = history.measure.toInt().toString()
         }

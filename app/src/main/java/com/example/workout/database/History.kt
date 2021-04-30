@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.android.gms.maps.model.LatLng
+import java.io.Serializable
 import java.sql.Date
 import java.sql.Time
 import java.sql.Timestamp
@@ -20,4 +21,4 @@ class History(
 //    @ColumnInfo(name = "track") val track: List<Float>?
 
 
-)
+) : Serializable

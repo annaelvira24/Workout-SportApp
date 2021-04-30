@@ -60,7 +60,7 @@ class HistoryListAdapter : ListAdapter<History, HistoryListAdapter.HistoryViewHo
             this.history = history
             println(history.timeStart)
             view.history_type.text = (history.exercise_type)
-            view.history_time.text = (Time(history.timeStart.time).toString() + " - " + Time(history.timeFinish.time).toString())
+            view.history_time.text = "Time | " + (Time(history.timeStart.time).toString() + " - " + Time(history.timeFinish.time).toString())
         }
     }
 

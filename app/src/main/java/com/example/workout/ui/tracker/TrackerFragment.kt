@@ -23,8 +23,12 @@ import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.workout.AfterTrack
+import com.example.workout.HistoryDetails
 import com.example.workout.R
+import com.example.workout.WorkoutApplication
 import com.example.workout.database.Exercise
+import com.example.workout.database.History
 import com.example.workout.models.TrackerModel
 import com.example.workout.other.Constants.ACTION_PAUSE_SERVICE
 import com.example.workout.other.Constants.ACTION_START_OR_RESUME_SERVICE_CYCLING
@@ -36,19 +40,33 @@ import com.example.workout.other.Constants.REQUEST_CODE_LOCATION_PERMISSION
 import com.example.workout.other.TrackerUtility
 import com.example.workout.services.Polyline
 import com.example.workout.services.TrackerService
+import com.example.workout.ui.history.HistoryViewModel
+import com.example.workout.ui.history.HistoryViewModelFactory
+import com.example.workout.ui.scheduler.ScheduleViewModelFactory
+import com.example.workout.ui.scheduler.SchedulerViewModel
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.PolylineOptions
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.history_logs2.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
+import java.io.Serializable
+import java.sql.Date
+import java.sql.Time
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
 import java.util.*
 
 
 @AndroidEntryPoint
 class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.PermissionCallbacks, SensorEventListener {
 
-    private val viewModel: TrackerModel by viewModels()
+//    private val viewModel: TrackerModel by viewModels()
+    private val viewModel: HistoryViewModel by viewModels {
+        HistoryViewModelFactory((activity?.application as WorkoutApplication).historyDao)
+    }
+
 
     private lateinit var cycling: ImageButton
     private lateinit var running: ImageButton
@@ -58,6 +76,11 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
     private lateinit var stop: Button
     private lateinit var compass: ImageView
     private lateinit var timerView: TextView
+
+    private lateinit var date : String
+    private lateinit var timeStart : Timestamp
+
+    private var exerciseType = "Cycling"
 
     private var map: GoogleMap? = null
 
@@ -136,6 +159,11 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
             running.isEnabled = false
             start.visibility = View.GONE
 
+            val format = SimpleDateFormat("yyyy-MM-dd")
+            date = format.format(Date(System.currentTimeMillis()))
+
+            timeStart = Timestamp(System.currentTimeMillis())
+
             toggleRun()
         }
 
@@ -187,6 +215,7 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
     private fun selectExercise() {
         cycling.setOnClickListener {
             Timber.d("Cycling")
+            exerciseType = "Cycling"
             ImageViewCompat.setImageTintList(
                 cycling,
                 ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
@@ -206,6 +235,7 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
 
         running.setOnClickListener {
             Timber.d("Running")
+            exerciseType = "Walking"
             ImageViewCompat.setImageTintList(
                 running,
                 ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
@@ -241,6 +271,14 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
 
     private fun stopRun() {
         sendCommandToService(ACTION_STOP_SERVICE)
+    }
+
+    private fun launchIntent(history: History){
+        val detailIntent = Intent(activity, AfterTrack::class.java)
+        detailIntent.putExtra("title", "History Logs");
+        detailIntent.putExtra("history_obj", history as Serializable);
+
+        activity?.startActivity(detailIntent);
     }
 
     private fun updateTracking(isTracking: Boolean) {
@@ -306,18 +344,33 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
     }
 
     private fun endRunAndSaveToDb() {
-        var distanceInMeters = 0
+        var distanceInMeters = 0f
         for(polyline in pathPoints) {
             distanceInMeters += TrackerUtility.calculatePolylineLength(polyline).toInt()
         }
-        val dateTimestamp = Calendar.getInstance().timeInMillis
-        var exercise: Exercise = if (exerciseID == 0) {
-            Exercise(exerciseID, dateTimestamp, distanceInMeters, curTimeInMillis, 0)
-        } else {
-            Exercise(exerciseID, dateTimestamp, distanceInMeters, curTimeInMillis, stepsAmount)
+        val timeFinish = Timestamp(System.currentTimeMillis())
+        var measure = 0f
+
+        println(exerciseType)
+
+        measure = if(exerciseType == "Cycling"){
+            distanceInMeters
+        } else{
+            stepsAmount.toFloat()
         }
-        viewModel.insertExercise(exercise)
+
+        var history = History(0,exerciseType, date, timeStart, timeFinish, measure)
+//        val dateTimestamp = Calendar.getInstance().timeInMillis
+//        var exercise: Exercise = if (exerciseID == 0) {
+//            Exercise(exerciseID, dateTimestamp, distanceInMeters, curTimeInMillis, 0)
+//        } else {
+//            Exercise(exerciseID, dateTimestamp, distanceInMeters, curTimeInMillis, stepsAmount)
+//        }
+        viewModel.insert(history)
+        println("Done saving history")
         stopRun()
+
+        launchIntent(history)
     }
 
     private fun addAllPolylines() {

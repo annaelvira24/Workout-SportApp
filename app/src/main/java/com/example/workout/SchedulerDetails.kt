@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
 import android.view.View
 
 import android.widget.*
@@ -13,18 +12,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.ImageViewCompat
 import com.example.workout.database.Schedule
-import com.example.workout.database.ScheduleDao
-import com.example.workout.ui.history.ScheduleViewModelFactory
-import com.example.workout.ui.history.SchedulerViewModel
+import com.example.workout.ui.scheduler.ScheduleViewModelFactory
+import com.example.workout.ui.scheduler.SchedulerViewModel
 import kotlinx.android.synthetic.main.fragment_tracker.*
 import kotlinx.android.synthetic.main.history_logs2.view.*
-import kotlinx.coroutines.launch
 import java.lang.System.currentTimeMillis
 import java.sql.Date
 import java.sql.Time
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
