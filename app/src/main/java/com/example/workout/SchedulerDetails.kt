@@ -33,7 +33,7 @@ class SchedulerDetails: AppCompatActivity() {
         ScheduleViewModelFactory((application as WorkoutApplication).scheduleDao)
     }
     private val context: Context? = null
-    lateinit var nameEditText: EditText
+
     lateinit var targetText: EditText
     lateinit var cautionText: TextView
     lateinit var startTimeSchedulePicker : TimePicker
@@ -120,7 +120,7 @@ class SchedulerDetails: AppCompatActivity() {
                 textview_date.setText(intent.getStringExtra("date"))
             }
             repeatValue = intent.getStringExtra("repeat").toInt()
-            nameEditText.setText(id.toString())
+
             if(repeatValue>=1000000){
                 sun.setTextColor(checkedTextColor)
             }
