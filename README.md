@@ -1,3 +1,24 @@
 # IF3210-2021-Android-K3-07
+Tugas Besar 3 IF3210 - Android Workout
 
-Tugas Besar 3 IF3210
+## Deskripsi Aplikasi
+Aplikasi workout merupakan aplikasi pada platform Android yang menunjanng kegiatan workout. Fitur-fitur yang disediakan adalah berita olahraga, pelacakan latihan untuk jenis latihan walking (berjalan) dan cycling (bersepeda), pencatatan history latihan, dan penjadwalan latihan. 
+
+## Cara Kerja
+1. Sport News <br/>
+Ketika fragment untuk sport news aktif, aplikasi akan <b>mengambil data dari API</b> sport news menggunakan retrofit dan mengubahnya ke dalam bentuk list class News yang terdiri dari atribut judul berita, deskripsi berita, url gambar, dan url berita. Lalu dengan menggunakan recycler view dan mengattach adaptor untuk list berita sehingga setiap item class pada list akan ditampilkan dalam satu card yang terdiri dari gambar, judul, dan deskripsi berita. Design halaman juga <b>responsive</b>. Jika orientasi device potrait, card akan ditampilkan dalam satu kolom, sedangkan jika orientasinya landscape card ditampilkan dalam dua kolom. Ketika salah satu card diklik, maka akan dibuat intent baru yang memuat <b>webview</b> untuk menampilakn berita sesuai url item tersebut.
+2. Training Tracker
+3. Training History
+4. Training Scheduler
+
+## Library yang Digunakan
+* Retrofit : digunkanan untuk mengambil data berita olahraga dari API. Justifikasi penggunaannya adalah karena library ini dapat mengubah antarmuka API menjadi callable object sesuai dengan class yang kita buat, sehingga untuk menampilkan hasil API call tersebut dapat mengakses atribut kelas dari objek tersebut.
+
+## Screenshot Aplikasi
+
+## Pembagian Kerja Anggota Kelompok
+| NIM | Nama | Pembagian Kerja |
+|-----|------|-----------------|
+| 13518045 | Anna Elvira Hartoyo | Fitur Sport News<br/>Fitur Training History |
+| 13518096 | Naufal Arfananda Ghifari | Fitur Training Scheduler|
+| 13518126 | Evan Pradanika | Fitur Trainig Tracker|
