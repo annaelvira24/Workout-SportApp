@@ -99,8 +99,8 @@ class SchedulerDetails: AppCompatActivity() {
 
         val previousTintList = ColorStateList.valueOf(Color.parseColor("#FF5A5A5A"))
         val previousTextColor = mon.currentTextColor
-        val checkedTintList = ColorStateList.valueOf(Color.parseColor("#FF03DAC5"))
-        val checkedTextColor = Color.parseColor("#FF03DAC5")
+        val checkedTintList = ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
+        val checkedTextColor = Color.parseColor("#FF6200EE")
 
 
         val title = this.intent.extras!!.getString("title")

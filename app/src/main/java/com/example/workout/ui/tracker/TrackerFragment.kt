@@ -248,9 +248,6 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
             runningText.setTextColor(Color.parseColor("#FF5A5A5A"))
             isCycling = true
             isRunning = false
-            start.isEnabled = true
-            start.setBackgroundColor(Color.parseColor("#FF6200EE"))
-            start.setTextColor(Color.parseColor("#FFFFFFFF"))
         }
 
         running.setOnClickListener {
@@ -268,9 +265,6 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
             cyclingText.setTextColor(Color.parseColor("#FF5A5A5A"))
             isRunning = true
             isCycling = false
-            start.isEnabled = true
-            start.setBackgroundColor(Color.parseColor("#FF6200EE"))
-            start.setTextColor(Color.parseColor("#FFFFFFFF"))
         }
     }
 
