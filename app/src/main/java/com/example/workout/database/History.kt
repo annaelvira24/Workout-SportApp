@@ -17,8 +17,7 @@ class History(
     @ColumnInfo(name = "date") val date: String,
     @ColumnInfo(name = "time_start") val timeStart: Timestamp,
     @ColumnInfo(name = "time_finish") val timeFinish: Timestamp,
-    @ColumnInfo(name = "measure") val measure: Float
-//    @ColumnInfo(name = "track") val track: List<Float>?
-
+    @ColumnInfo(name = "measure") val measure: Float,
+    @ColumnInfo(name = "track") val track: ArrayList<Double>? = ArrayList()
 
 ) : Serializable

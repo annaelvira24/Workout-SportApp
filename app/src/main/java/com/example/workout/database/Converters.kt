@@ -3,10 +3,12 @@ package com.example.workout.database
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.room.TypeConverter
+import org.json.JSONArray
+import org.json.JSONException
 import java.io.ByteArrayOutputStream
-import java.sql.Date
 import java.sql.Time
 import java.sql.Timestamp
+
 
 class Converters {
     @TypeConverter
@@ -17,6 +19,16 @@ class Converters {
     @TypeConverter
     fun fromTime(value: Long?): Time? {
         return value?.let { Time(it) }
+    }
+
+    @TypeConverter
+    fun fromArrayListOfDoubles(list: ArrayList<Double>?): String {
+        return list?.joinToString(separator = ";") { it.toString() } ?: ""
+    }
+
+    @TypeConverter
+    fun toArrayListOfDoubles(string: String?): ArrayList<Double> {
+        return ArrayList(string?.split(";")?.mapNotNull { it.toDoubleOrNull() } ?: emptyList())
     }
 
     @TypeConverter
