@@ -16,7 +16,9 @@ Training tracker merupakan halaman yang digunakan untuk melakukan pelacakan lati
 ### Training History
 Training history ditampilkan dengan memanfaatkan recycler view dan card untuk setiap item pada database history yang disimpan menggunakan SQLite. Pengambilan data (query) dilakukan menggunakan DAO sesuai tanggal yang dipilih pada kalender. Log history dan detail log history ini diimplementasikan menggukanan <b>fragment</b> yang mendukung <b>responsive</b>. 
 
-Ketika layar dalam keadaan potrait, framelayout yang digunakan hanya satu untuk history log saja dan ketika item diklik akan dilakukan replace fragment history log menjadi history log details. Ketika device dalam keadaan landscape, digunakan dua framelayout masing-masing satu untuk history log dan satu untuk history log details bersebelahan
+Ketika layar dalam keadaan potrait, framelayout yang digunakan hanya satu untuk history log saja dan ketika item diklik akan dilakukan replace fragment history log menjadi history log details. Ketika device dalam keadaan landscape, digunakan dua framelayout masing-masing satu untuk history log dan satu untuk history log details bersebelahan. 
+
+Untuk history cycling, terdapat button untuk melihat maps rute pelacakan lokasi selama pengguna bersepeda. Maps dimuat dalam sebuah intent dan garis rute digambarkan dengan <b>polylines</b> di atas google maps dari pemanggilan menggunakan google maps API.
 
 ### Training Scheduler
 
@@ -26,6 +28,8 @@ Ketika layar dalam keadaan potrait, framelayout yang digunakan hanya satu untuk 
 * EasyPermissions : digunakan untuk meminta izin akses terhadap perangkat. Justifikasi penggunaannya adalah karena library ini dapat menyederhanakan sistem logika perihal permintaan izin akses ketika menghadapi sistem operasi Android M ke atas sehingga mengurus izin akses menjadi lebih mudah.
 
 * Timber : digunakan untuk mencetak data dari kode ke terminal. Justifikasi penggunaannya adalah karena library ini dapat mempermudah dalam debugging kode untuk memeriksa apakah aplikasi yang dibuat sudah sesuai atau belum langsung pada Build, tidak pada Debug sehingga proses pemeriksaan hasil kode lebih mudah dan cepat.
+
+* Google Play Service Maps dan Location : digunakan untuk menggunakan google maps pada aplikasi. Justifikasi penggunaannya adalah karena dengan library ini kita dapat memanfaatkan dan memanggil API google maps sehingga bisa digunakan dalam aplikasi.
 
 ## Screenshot Aplikasi
 ### Tampilan potrait Sport News<br/>
@@ -52,6 +56,8 @@ Ketika layar dalam keadaan potrait, framelayout yang digunakan hanya satu untuk 
 <img src = "screenshot/schedule.png" width="300px"/><br/>
 ### Add new Schedule
 <img src = "screenshot/schedule2.png" width="300px"/><br/>
+### Notification
+<img src = "screenshot/schedule3.png" width="300px"/><br/>
 
 ## Pembagian Kerja Anggota Kelompok
 | NIM | Nama | Pembagian Kerja |
