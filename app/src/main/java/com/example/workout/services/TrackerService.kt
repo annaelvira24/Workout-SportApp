@@ -109,24 +109,22 @@ class TrackerService : LifecycleService(), SensorEventListener {
             when (it.action) {
                 ACTION_START_OR_RESUME_SERVICE_CYCLING -> {
                     initSteps()
-                    exerciseID.postValue(0)
                     if(isFirstRun) {
-                        startForegroundService()
+                        startForegroundServiceCycling()
                         isFirstRun = false
                     } else {
                         Timber.d("Resuming service...")
-                        startTimer()
+                        startTimerCycling()
                     }
                 }
                 ACTION_START_OR_RESUME_SERVICE_RUNNING -> {
                     initSteps()
-                    exerciseID.postValue(1)
                     if(isFirstRun) {
-                        startForegroundService()
+                        startForegroundServiceRunning()
                         isFirstRun = false
                     } else {
                         Timber.d("Resuming service...")
-                        startTimer()
+                        startTimerRunning()
                     }
                 }
                 ACTION_STOP_SERVICE -> {
@@ -144,7 +142,7 @@ class TrackerService : LifecycleService(), SensorEventListener {
     private var timeStarted = 0L
     private var lastSecondTimestamp = 0L
 
-    private fun startTimer() {
+    private fun startTimerCycling() {
         addEmptyPolyline()
         isTracking.postValue(true)
         timeStarted = System.currentTimeMillis()
@@ -161,6 +159,32 @@ class TrackerService : LifecycleService(), SensorEventListener {
                 }
                 delay(TIMER_UPDATE_INTERVAL)
                 stepsAmount.postValue(newSteps)
+                exerciseID.postValue(0)
+                Timber.d("C-ID: %s", exerciseID.value)
+            }
+            timeRun += lapTime
+        }
+    }
+
+    private fun startTimerRunning() {
+        addEmptyPolyline()
+        isTracking.postValue(true)
+        timeStarted = System.currentTimeMillis()
+        isTimerEnabled = true
+        CoroutineScope(Dispatchers.Main).launch {
+            while (isTracking.value!!) {
+                // time difference between now and timeStarted
+                lapTime = System.currentTimeMillis() - timeStarted
+                // post the new lapTime
+                timeRunInMillis.postValue(timeRun + lapTime)
+                if (timeRunInMillis.value!! >= lastSecondTimestamp + 1000L) {
+                    timeRunInSeconds.postValue(timeRunInSeconds.value!! + 1)
+                    lastSecondTimestamp += 1000L
+                }
+                delay(TIMER_UPDATE_INTERVAL)
+                stepsAmount.postValue(newSteps)
+                exerciseID.postValue(1)
+                Timber.d("R-ID: %s", exerciseID.value)
             }
             timeRun += lapTime
         }
@@ -247,8 +271,8 @@ class TrackerService : LifecycleService(), SensorEventListener {
         pathPoints.postValue(this)
     } ?: pathPoints.postValue(mutableListOf(mutableListOf()))
 
-    private fun startForegroundService() {
-        startTimer()
+    private fun startForegroundServiceCycling() {
+        startTimerCycling()
         isTracking.postValue(true)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE)
@@ -264,6 +288,28 @@ class TrackerService : LifecycleService(), SensorEventListener {
             if(!serviceKilled) {
                 val notification = curNotificationBuilder
                     .setContentText(TrackerUtility.getFormattedStopWatchTime(it * 1000L))
+                notificationManager.notify(NOTIFICATION_ID, notification.build())
+            }
+        })
+    }
+
+    private fun startForegroundServiceRunning() {
+        startTimerRunning()
+        isTracking.postValue(true)
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE)
+                as NotificationManager
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel(notificationManager)
+        }
+
+        startForeground(NOTIFICATION_ID, baseNotificationBuilder.build())
+
+        timeRunInSeconds.observe(this, Observer {
+            if(!serviceKilled) {
+                val notification = curNotificationBuilder
+                        .setContentText(TrackerUtility.getFormattedStopWatchTime(it * 1000L))
                 notificationManager.notify(NOTIFICATION_ID, notification.build())
             }
         })

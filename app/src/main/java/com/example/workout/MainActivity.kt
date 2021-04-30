@@ -8,11 +8,18 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.workout.other.Constants.ACTION_SHOW_TRACKING_FRAGMENT
+import com.example.workout.ui.tracker.TrackerFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TrackerFragment.OnDataPass {
+
+    private var e = 0
+
+    override fun onDataPass(exerciseId: Int) {
+        e = exerciseId
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,12 +33,12 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_news,
-                R.id.navigation_tracker,
-                R.id.navigation_history,
-                R.id.navigation_scheduler
-            )
+                setOf(
+                        R.id.navigation_news,
+                        R.id.navigation_tracker,
+                        R.id.navigation_history,
+                        R.id.navigation_scheduler
+                )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
@@ -47,6 +54,10 @@ class MainActivity : AppCompatActivity() {
             val navController = findNavController(R.id.nav_host_fragment)
             navController.navigate(R.id.navigation_tracker)
         }
+    }
+
+    fun getExercise(): Int? {
+        return e
     }
 
 }

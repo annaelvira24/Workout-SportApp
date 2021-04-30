@@ -1,6 +1,7 @@
 package com.example.workout.ui.tracker
 
 import android.Manifest
+import android.content.Context
 import android.content.Context.SENSOR_SERVICE
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -24,12 +25,10 @@ import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.workout.AfterTrack
-import com.example.workout.HistoryDetails
+import com.example.workout.MainActivity
 import com.example.workout.R
 import com.example.workout.WorkoutApplication
-import com.example.workout.database.Exercise
 import com.example.workout.database.History
-import com.example.workout.models.TrackerModel
 import com.example.workout.other.Constants.ACTION_PAUSE_SERVICE
 import com.example.workout.other.Constants.ACTION_START_OR_RESUME_SERVICE_CYCLING
 import com.example.workout.other.Constants.ACTION_START_OR_RESUME_SERVICE_RUNNING
@@ -42,21 +41,16 @@ import com.example.workout.services.Polyline
 import com.example.workout.services.TrackerService
 import com.example.workout.ui.history.HistoryViewModel
 import com.example.workout.ui.history.HistoryViewModelFactory
-import com.example.workout.ui.scheduler.ScheduleViewModelFactory
-import com.example.workout.ui.scheduler.SchedulerViewModel
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.PolylineOptions
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.history_logs2.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
 import java.io.Serializable
 import java.sql.Date
-import java.sql.Time
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
-import java.util.*
 
 
 @AndroidEntryPoint
@@ -80,6 +74,7 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
     private lateinit var date : String
     private lateinit var timeStart : Timestamp
 
+    private var exerciseID: Int? = null
     private var exerciseType = "Cycling"
 
     private var map: GoogleMap? = null
@@ -88,7 +83,6 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
     private var accelerometer: Sensor? = null
     private var magnetic: Sensor? = null
 
-    private var exerciseID = 0
     private var stepsAmount = 0
     private var started = false
 
@@ -103,10 +97,25 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
     private var pathPoints = mutableListOf<Polyline>()
     private var curTimeInMillis = 0L
 
+    interface OnDataPass {
+        fun onDataPass(exerciseID: Int)
+    }
+
+    lateinit var dataPasser: OnDataPass
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        dataPasser = context as OnDataPass
+    }
+
+    private fun passData(exerciseID: Int) {
+        dataPasser.onDataPass(exerciseID)
+    }
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -116,16 +125,13 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
         super.onViewCreated(view, savedInstanceState)
         requestPermissions()
 
-        Timber.d("Exercise ID: %s", exerciseID)
+        exerciseID = (activity as MainActivity?)!!.getExercise()
 
-        if (exerciseID == 0) {
-            isCycling = true
-            isRunning = false
-        }
-        else {
-            isCycling = false
-            isRunning = true
-        }
+
+        val format = SimpleDateFormat("yyyy-MM-dd")
+        date = format.format(Date(System.currentTimeMillis()))
+
+        timeStart = Timestamp(System.currentTimeMillis())
 
         cycling = requireView().findViewById(R.id.cyclingBtn)
         running = requireView().findViewById(R.id.runningBtn)
@@ -137,17 +143,28 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
 
         selectExercise()
 
+        if (exerciseID == 0) {
+            isCycling = true
+            isRunning = false
+            exerciseType = "Cycling"
+        }
+        else {
+            isCycling = false
+            isRunning = true
+            exerciseType = "Walking"
+        }
+
         if (isCycling) {
             ImageViewCompat.setImageTintList(
-                cycling,
-                ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
+                    cycling,
+                    ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
             )
             cyclingText.setTextColor(Color.parseColor("#FF6200EE"))
         }
         else {
             ImageViewCompat.setImageTintList(
-                running,
-                ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
+                    running,
+                    ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
             )
             runningText.setTextColor(Color.parseColor("#FF6200EE"))
         }
@@ -204,6 +221,7 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
 
         TrackerService.exerciseID.observe(viewLifecycleOwner, {
             updateExerciseID(it)
+            Timber.d("Exercise ID: %s", it)
         })
 
         TrackerService.stepsAmount.observe(viewLifecycleOwner, {
@@ -215,14 +233,13 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
     private fun selectExercise() {
         cycling.setOnClickListener {
             Timber.d("Cycling")
-            exerciseType = "Cycling"
             ImageViewCompat.setImageTintList(
-                cycling,
-                ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
+                    cycling,
+                    ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
             )
             ImageViewCompat.setImageTintList(
-                running,
-                ColorStateList.valueOf(Color.parseColor("#FF5A5A5A"))
+                    running,
+                    ColorStateList.valueOf(Color.parseColor("#FF5A5A5A"))
             )
             cyclingText.setTextColor(Color.parseColor("#FF6200EE"))
             runningText.setTextColor(Color.parseColor("#FF5A5A5A"))
@@ -235,14 +252,13 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
 
         running.setOnClickListener {
             Timber.d("Running")
-            exerciseType = "Walking"
             ImageViewCompat.setImageTintList(
-                running,
-                ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
+                    running,
+                    ColorStateList.valueOf(Color.parseColor("#FF6200EE"))
             )
             ImageViewCompat.setImageTintList(
-                cycling,
-                ColorStateList.valueOf(Color.parseColor("#FF5A5A5A"))
+                    cycling,
+                    ColorStateList.valueOf(Color.parseColor("#FF5A5A5A"))
             )
             runningText.setTextColor(Color.parseColor("#FF6200EE"))
             cyclingText.setTextColor(Color.parseColor("#FF5A5A5A"))
@@ -256,14 +272,23 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
 
     private fun toggleRun() {
 
-        timerView.text = "00:00:00"
+        var e = if (isCycling) {
+            0
+        } else {
+            1
+        }
+
+        passData(e)
+
         if(isTracking) {
             sendCommandToService(ACTION_PAUSE_SERVICE)
         } else {
             if (isCycling) {
+                Timber.d("Send cycling!")
                 sendCommandToService(ACTION_START_OR_RESUME_SERVICE_CYCLING)
             }
             else {
+                Timber.d("Send running!")
                 sendCommandToService(ACTION_START_OR_RESUME_SERVICE_RUNNING)
             }
         }
@@ -271,6 +296,7 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
 
     private fun stopRun() {
         sendCommandToService(ACTION_STOP_SERVICE)
+        timerView.text = "00:00:00"
     }
 
     private fun launchIntent(history: History){
@@ -306,20 +332,20 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
         }
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             EasyPermissions.requestPermissions(
-                this,
-                "You need to accept location permissions to use this app.",
-                REQUEST_CODE_LOCATION_PERMISSION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION
+                    this,
+                    "You need to accept location permissions to use this app.",
+                    REQUEST_CODE_LOCATION_PERMISSION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
             )
         } else {
             EasyPermissions.requestPermissions(
-                this,
-                "You need to accept location permissions to use this app.",
-                REQUEST_CODE_LOCATION_PERMISSION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    this,
+                    "You need to accept location permissions to use this app.",
+                    REQUEST_CODE_LOCATION_PERMISSION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
             )
         }
     }
@@ -335,9 +361,9 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {}
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
@@ -359,7 +385,7 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
             stepsAmount.toFloat()
         }
 
-        var history = History(0,exerciseType, date, timeStart, timeFinish, measure)
+        var history = History(0, exerciseType, date, timeStart, timeFinish, measure)
 //        val dateTimestamp = Calendar.getInstance().timeInMillis
 //        var exercise: Exercise = if (exerciseID == 0) {
 //            Exercise(exerciseID, dateTimestamp, distanceInMeters, curTimeInMillis, 0)
@@ -453,12 +479,12 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
             azimuth = (azimuth + 360) % 360
 
             var anim: Animation = RotateAnimation(
-                -currAzimuth,
-                -azimuth,
-                Animation.RELATIVE_TO_SELF,
-                0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f
+                    -currAzimuth,
+                    -azimuth,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f
             )
             currAzimuth = azimuth
 
