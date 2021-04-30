@@ -21,6 +21,13 @@ Ketika layar dalam keadaan potrait, framelayout yang digunakan hanya satu untuk 
 Untuk history cycling, terdapat button untuk melihat maps rute pelacakan lokasi selama pengguna bersepeda. Maps dimuat dalam sebuah intent dan garis rute digambarkan dengan <b>polylines</b> di atas google maps dari pemanggilan menggunakan google maps API.
 
 ### Training Scheduler
+Training Scheduler ditampilkan dengan memanfaatkan recycler view. Data scheduler ini disimpan pada SQLite. Terdapat query Insert Update, Delete dan Get All yang digunakan. Terdapat tombol Plus untuk menambahkan schedule baru. Sementara Untuk mengedit atau menghapus schedule, dapat dilakukan dengan mengklik item dari recycler view yang ingin di Update atau Delete
+
+Saat menambahkan schedule baru, pengguna dapat memilih jenis exercise apa yang mereka rencanakan untuk dikerjakan dengan waktu mulai dan waktu akhir.  Pengguna dapat memilih tanggal spesifik exercise akan dikerjakan. Pengguna juga dapat menjadikan schedule yang dipilh sebagai rutinitas mingguan pada setiap hari tertetu. Pengguna mencantumkan target dalam exercise.
+
+Setelah menetapkan schedule, pengguna akan mendapatkan notifikasi di pop up Androidnya saat waktu exercise yang dijadwalkan tiba. Notifikasi ini memanfaatkan Alarm Manager dan Pending Intent. Pengguna juga akan mendapatkan notifikasi ketika waktu exercise selesai. Notifikasi untuk waktu selesai baru dibuat setelah Notifikasi start muncul. Untuk schedule yang rutin. Misalnya setiap hari Senin dan Jumat, saat Schedule dibuat, akan dipasang notifikasi pada Senin dan Jumat terdekat. Sementara untuk minggu depannya, notifikasi baru dibuat setelah notifikasi yang minggu ini muncul.
+
+
 
 ## Library yang Digunakan
 * Retrofit : digunakan untuk mengambil data berita olahraga dari API. Justifikasi penggunaannya adalah karena library ini dapat mengubah antarmuka API menjadi callable object sesuai dengan class yang kita buat, sehingga untuk menampilkan hasil API call tersebut dapat mengakses atribut kelas dari objek tersebut.
@@ -32,6 +39,8 @@ Untuk history cycling, terdapat button untuk melihat maps rute pelacakan lokasi 
 * Google Play Service Maps dan Location : digunakan untuk menggunakan google maps pada aplikasi. Justifikasi penggunaannya adalah karena dengan library ini kita dapat memanfaatkan dan memanggil API google maps sehingga bisa digunakan dalam aplikasi.
 
 * Glide : digunakan untuk menampilkan gambar pada card dari sumber url. Justifikasi penggunannya karena penggunaaanya sederhana dan dapat menampilkan gambar yang bersumber dari url
+
+* Io.karn.Notify : digunakan untuk membuat Notifikasi. Justifikasi penggunaannya adalah karea dengan library ini memudahkan kita dalam membuat Notifikasi pada Pop up Android dan melakukan format terhadap isi notifikasinya
 
 ## Screenshot Aplikasi
 ### Tampilan potrait Sport News<br/>
