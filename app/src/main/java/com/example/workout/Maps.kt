@@ -1,10 +1,8 @@
 package com.example.workout
 
-import android.content.Context
 import android.os.Bundle
-import android.webkit.WebChromeClient
-import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -14,9 +12,11 @@ import com.google.android.gms.maps.model.PolylineOptions
 
 class Maps : AppCompatActivity(), OnMapReadyCallback{
 
+    private lateinit var listDouble: ArrayList<Double>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        listDouble = intent.getSerializableExtra("arrayList") as ArrayList<Double>
         // Retrieve the content view that renders the map.
         setContentView(R.layout.maps)
 
@@ -27,16 +27,26 @@ class Maps : AppCompatActivity(), OnMapReadyCallback{
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        val polyline1 = googleMap.addPolyline(PolylineOptions()
-                .clickable(true)
-                .add(
-                        LatLng(-35.016, 143.321),
-                        LatLng(-34.747, 145.592),
-                        LatLng(-34.364, 147.891),
-                        LatLng(-33.501, 150.217),
-                        LatLng(-32.306, 149.248),
-                        LatLng(-32.491, 147.309)))
 
+        val arrayLatLng = convertToLatLng(listDouble)
+        println(arrayLatLng)
+        val polyline1 = googleMap.addPolyline(PolylineOptions()
+                .addAll(arrayLatLng).width(3f))
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(arrayLatLng[0], 20f))
+
+    }
+
+    fun convertToLatLng(arrayDouble: ArrayList<Double>): MutableList<LatLng>{
+        var arrayLatLng : MutableList<LatLng> = ArrayList()
+        for (i in 0 until arrayDouble.size/2){
+            arrayLatLng.add(LatLng(arrayDouble[i * 2], arrayDouble[(i * 2) + 1]))
+        }
+        return (arrayLatLng)
+    }
+
+    private fun <T> List<T>.toArrayList(): ArrayList<T>{
+        return ArrayList(this)
     }
 
 }

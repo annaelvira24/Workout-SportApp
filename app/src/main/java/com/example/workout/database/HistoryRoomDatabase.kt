@@ -65,13 +65,10 @@ public abstract class HistoryRoomDatabase : RoomDatabase() {
 
             val format = SimpleDateFormat("yyyy-MM-dd")
             val date = format.format(Date(System.currentTimeMillis()))
-            val time = Timestamp(System.currentTimeMillis())
+            val time = Timestamp(System.currentTimeMillis()+3600)
             println(time)
             // Add dummy data
-            var history = History(0,"Walking", date, time, time, 10.0f)
-            historyDao.insert(history)
-
-            history = History(0,"Walking", "2021-04-28", time, time, 1000.0f)
+            var history = History(0,"Walking", "2021-04-28", time, time, 1000.0f)
             historyDao.insert(history)
 
             history = History(0,"Cycling", "2021-04-28", time, time, 1000.0f)
