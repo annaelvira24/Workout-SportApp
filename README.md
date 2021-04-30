@@ -11,6 +11,7 @@ Ketika fragment untuk sport news aktif, aplikasi akan <b>mengambil data dari API
 Design halaman juga <b>responsive</b>. Jika orientasi device potrait, card akan ditampilkan dalam satu kolom, sedangkan jika orientasinya landscape card ditampilkan dalam dua kolom. Ketika salah satu card diklik, maka akan dibuat intent baru yang memuat <b>webview</b> untuk menampilakn berita sesuai url item tersebut.
 
 ### Training Tracker
+Training tracker merupakan halaman yang digunakan untuk melakukan pelacakan latihan yang terdiri dari dua jenis, yaitu <b>Cycling</b> yang melacak jarak tempuh dan rute yang dilalui berupa angka dan peta serta <b>Walking/Running</b> yang melacak jumlah step yang dilakukan. Sistem pelacakan ini berjalan pada <b>background</b> memanfaatkan services dan memiliki <b>kompas</b> yang diimplementasikan dengan memanfaatkan sensor. 
 
 ### Training History
 Training history ditampilkan dengan memanfaatkan recycler view dan card untuk setiap item pada database history yang disimpan menggunakan SQLite. Pengambilan data (query) dilakukan menggunakan DAO sesuai tanggal yang dipilih pada kalender. Log history dan detail log history ini diimplementasikan menggukanan <b>fragment</b> yang mendukung <b>responsive</b>. 
@@ -21,6 +22,10 @@ Ketika layar dalam keadaan potrait, framelayout yang digunakan hanya satu untuk 
 
 ## Library yang Digunakan
 * Retrofit : digunakan untuk mengambil data berita olahraga dari API. Justifikasi penggunaannya adalah karena library ini dapat mengubah antarmuka API menjadi callable object sesuai dengan class yang kita buat, sehingga untuk menampilkan hasil API call tersebut dapat mengakses atribut kelas dari objek tersebut.
+
+* EasyPermissions : digunakan untuk meminta izin akses terhadap perangkat. Justifikasi penggunaannya adalah karena library ini dapat menyederhanakan sistem logika perihal permintaan izin akses ketika menghadapi sistem operasi Android M ke atas sehingga mengurus izin akses menjadi lebih mudah.
+
+* Timber : digunakan untuk mencetak data dari kode ke terminal. Justifikasi penggunaannya adalah karena library ini dapat mempermudah dalam debugging kode untuk memeriksa apakah aplikasi yang dibuat sudah sesuai atau belum langsung pada Build, tidak pada Debug sehingga proses pemeriksaan hasil kode lebih mudah dan cepat.
 
 ## Screenshot Aplikasi
 ### Tampilan potrait Sport News<br/>
