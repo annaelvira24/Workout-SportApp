@@ -23,15 +23,24 @@ Ketika layar dalam keadaan potrait, framelayout yang digunakan hanya satu untuk 
 * Retrofit : digunakan untuk mengambil data berita olahraga dari API. Justifikasi penggunaannya adalah karena library ini dapat mengubah antarmuka API menjadi callable object sesuai dengan class yang kita buat, sehingga untuk menampilkan hasil API call tersebut dapat mengakses atribut kelas dari objek tersebut.
 
 ## Screenshot Aplikasi
-* Tampilan potrait Sport News
-* Tampilan landscape Sport News
-* Tampilan Webview Sport News
-* Tracker
-* Training History
-* Log History potrait
-* Detail log History potrait
-* Log dan detail History landscape
-* Scheduler
+### Tampilan potrait Sport News<br/>
+<img src = "screenshot/sportnews.png" width="300px"/><br/>
+### Tampilan landscape Sport News<br/>
+<img src = "screenshot/sportnews2.png" width="600px"/><br/>
+### Tampilan Webview Sport News<br/>
+<img src = "screenshot/sportnews3.png" width="300px"/><br/>
+### Tracker<br/>
+<img src = "screenshot/tracker.png" width="300px"/><br/>
+### Training History<br/>
+<img src = "screenshot/history.png" width="300px"/><br/>
+### Log History potrait<br/>
+<img src = "screenshot/history2.png" width="300px"/><br/>
+### Detail log History potrait<br/>
+<img src = "screenshot/history3.png" width="300px"/><br/>
+### Log dan detail History landscape<br/>
+<img src = "screenshot/history4.png" width="600px"/><br/>
+### Scheduler
+### Add new Schedule
 
 ## Pembagian Kerja Anggota Kelompok
 | NIM | Nama | Pembagian Kerja |
