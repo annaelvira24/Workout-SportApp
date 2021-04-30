@@ -40,6 +40,8 @@ Untuk history cycling, terdapat button untuk melihat maps rute pelacakan lokasi 
 <img src = "screenshot/sportnews3.png" width="300px"/><br/>
 ### Tracker<br/>
 <img src = "screenshot/tracker.png" width="300px"/><br/>
+### Tracker start<br />
+<img src = "screenshot/tracker2.png" width="300px"/><br/>
 ### Training History<br/>
 <img src = "screenshot/history.png" width="300px"/><br/>
 ### Log History potrait<br/>
