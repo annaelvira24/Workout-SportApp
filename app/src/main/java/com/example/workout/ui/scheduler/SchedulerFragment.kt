@@ -29,9 +29,9 @@ class SchedulerFragment : Fragment() {
     private lateinit var addButton: FloatingActionButton
     private  lateinit var schedulerListView : ListView
 
-//    private val schedulerViewModel: SchedulerViewModel by viewModels {
-//        ScheduleViewModelFactory((activity?.application as WorkoutApplication).scheduleDao)
-//    }
+    private val schedulerViewModel: SchedulerViewModel by viewModels {
+        ScheduleViewModelFactory((activity?.application as WorkoutApplication).scheduleDao)
+    }
 
 
     override fun onCreateView(
@@ -40,18 +40,33 @@ class SchedulerFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_scheduler, container, false)
-//        val rvView: RecyclerView = root.findViewById(R.id.rvSchedule)
-//
-//        val adapter = SchedulerListAdapter()
-//        rvView.adapter = adapter
-//
-//        rvView.layoutManager = LinearLayoutManager(activity)
+        val rvView: RecyclerView = root.findViewById(R.id.rvSchedule)
 
-//        schedulerViewModel.getAllSchedule().observe(viewLifecycleOwner) { logs ->
-//            // Update the cached copy of the words in the adapter.
-//            logs.let { adapter.submitList(it) }
+        val adapter = SchedulerListAdapter({
+            val detailIntent = Intent(activity, SchedulerDetails::class.java)
+            detailIntent.putExtra("title", "Edit Schedule")
+            //To Do
+            detailIntent.putExtra("id", it.id)
+            detailIntent.putExtra("exercise_type", it.exercise_type)
+            detailIntent.putExtra("date", it.date)
+            detailIntent.putExtra("timeStart", it.timeStart)
+            detailIntent.putExtra("timeFinish", it.timeFinish)
+            detailIntent.putExtra("repeat", it.repeat)
+            detailIntent.putExtra("autoTrack", it.autoTrack)
+            detailIntent.putExtra("measure",it.measure)
+
+            activity!!.startActivity(detailIntent);
+        })
+        rvView.adapter = adapter
 //
-//        }
+        rvView.layoutManager = LinearLayoutManager(activity)
+//
+        schedulerViewModel.getAllSchedule().observe(viewLifecycleOwner) { logs ->
+//             Update the cached copy of the words in the adapter.
+            logs.let { adapter.submitList(it) }
+
+        }
+
 
 //        val root = inflater.inflate(R.layout.fragment_scheduler, container, false)
 //        schedulerListView = root.findViewById<ListView>(R.id.listSchedulerView)
