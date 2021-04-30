@@ -8,14 +8,14 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="208dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="300dp"
+        android:layout_width="240dp"
+        android:layout_height="73dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/startBtn"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <ImageButton
             android:id="@+id/cyclingBtn"
@@ -28,6 +28,14 @@
             android:tint="#5A5A5A" />
 
         <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
+            android:contentDescription="@string/space1" />
+
+        <ImageButton
             android:id="@+id/runningBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -38,33 +46,94 @@
             android:tint="#5A5A5A" />
     </LinearLayout>
 
-    <ToggleButton
-        android:id="@+id/startBtn"
-        android:layout_width="89dp"
-        android:layout_height="36dp"
-        android:background="#00FFFFFF"
-        android:text="@string/togglebutton"
-        android:textAlignment="center"
-        android:textColor="#A1000000"
-        android:textOff="@string/start"
-        android:textOn="@string/stop"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.789" />
-
     <ImageView
         android:id="@+id/compassImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/compass_img"
         android:src="@drawable/ic_tracker_compass_150"
-        app:layout_constraintBottom_toTopOf="@+id/startBtn"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.154" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="240dp"
+        android:layout_height="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/cyclingTxt"
+            android:layout_width="84dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/cycling"
+            android:textAlignment="center"
+            android:textColor="#FF5A5A5A" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
+            android:contentDescription="@string/space2" />
+
+        <TextView
+            android:id="@+id/runningTxt"
+            android:layout_width="84dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="@string/running"
+            android:textAlignment="center"
+            android:textColor="#FF5A5A5A" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/timerView"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:text="@string/_00_00_00"
+        android:textAlignment="center"
+        android:textColor="#FF5A5A5A"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/compassImg" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="93dp"
+        android:layout_height="32dp"
+        android:backgroundTint="#FF5A5A5A"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/stop"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="93dp"
+        android:layout_height="32dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/start"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
