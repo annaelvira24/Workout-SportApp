@@ -22,6 +22,8 @@ import kotlinx.coroutines.launch
 import java.lang.System.currentTimeMillis
 import java.sql.Time
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -53,6 +55,7 @@ class SchedulerDetails: AppCompatActivity() {
     var cal = Calendar.getInstance()
     private var isCycling = true
     private var choosenDate = ""
+    private var id = -1
 
 
 
@@ -83,7 +86,7 @@ class SchedulerDetails: AppCompatActivity() {
         textview_date = findViewById(R.id.viewDate)
         button_date = findViewById(R.id.buttonDate)
 
-        textview_date!!.text = "--/--/----"
+        textview_date!!.text = "____-__-__"
 
 
         val previousTintList = ColorStateList.valueOf(Color.parseColor("#FF5A5A5A"))
@@ -96,15 +99,44 @@ class SchedulerDetails: AppCompatActivity() {
         setTitle(title);
 
         if(intent.hasExtra("id")){
-            //ini buat yang udah ada. Klo Klik list viewnya
+            id = intent.getIntExtra("id",-1)
             isCycling = intent.getStringExtra("exercise_type") == "Cycling"
             if(!isCycling){
                 ImageViewCompat.setImageTintList(runningButton, checkedTintList)
                 ImageViewCompat.setImageTintList(cyclingButton, previousTintList)
                 targetText.setHint("Steps Target")
             }
-//            targetText.text = Editable.Factory.getInstance().newEditable(intent.getStringExtra("measure"))
-            //autoStarCheckBox.isChecked =  intent.getBooleanExtra("autoTrack")
+            targetText.setText(intent.getFloatExtra("measure",0f).toString())
+            autoStarCheckBox.isChecked =  intent.getBooleanExtra("autoTrack",false)
+            startTimeSchedulePicker.hour = intent.getIntExtra("timeStartHour",0)
+            startTimeSchedulePicker.minute = intent.getIntExtra("timeStartMinute",0)
+            finishTimeSchedulePicker.hour = intent.getIntExtra("timeFinishHour",0)
+            finishTimeSchedulePicker.minute = intent.getIntExtra("timeFinishMinute",0)
+            textview_date.setText(intent.getStringExtra("date"))
+            repeatValue = intent.getStringExtra("repeat").toInt()
+            nameEditText.setText(id.toString())
+            if(repeatValue>=1000000){
+                sun.setTextColor(checkedTextColor)
+            }
+            if(repeatValue%1000000>=100000){
+                mon.setTextColor(checkedTextColor)
+            }
+            if(repeatValue%100000>=10000){
+                tue.setTextColor(checkedTextColor)
+            }
+            if(repeatValue%10000>=1000){
+                wed.setTextColor(checkedTextColor)
+            }
+            if(repeatValue%1000>=100){
+                thu.setTextColor(checkedTextColor)
+            }
+            if(repeatValue%100>=10){
+                fri.setTextColor(checkedTextColor)
+            }
+            if(repeatValue%10>=1){
+                sat.setTextColor(checkedTextColor)
+            }
+
 
 
         }else{
@@ -128,10 +160,16 @@ class SchedulerDetails: AppCompatActivity() {
         }
         updateButton.setOnClickListener {
             //To Do
+            val time = Time(currentTimeMillis())
+            val startTime = Time(startTimeSchedulePicker.hour,startTimeSchedulePicker.minute,0)
+            val finishTime = Time(finishTimeSchedulePicker.hour,finishTimeSchedulePicker.minute,0)
+            val exercise_type = if (isCycling) "Cycling" else "Walking"
+            schedulerViewModel.update(id,exercise_type, choosenDate, startTime  , finishTime, repeatValue.toString().padStart(7,'0'), autoStarCheckBox.isChecked,targetText.text.toString().toFloat())
             finish()
         }
         deleteButton.setOnClickListener {
             //To Do
+            schedulerViewModel.delete(id)
             finish()
         }
 
@@ -260,9 +298,7 @@ class SchedulerDetails: AppCompatActivity() {
     private fun updateDateInView() {
         val format = "yyyy-MM-dd"
         choosenDate = SimpleDateFormat(format, Locale.US).format(cal.getTime())
-        val myFormat = "dd/MM/yyyy" // mention the format you need
-        val sdf = SimpleDateFormat(myFormat, Locale.US)
-        textview_date.text = sdf.format(cal.getTime())
+        textview_date.text = choosenDate
     }
 
 

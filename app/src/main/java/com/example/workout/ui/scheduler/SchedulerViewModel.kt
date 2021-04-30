@@ -6,6 +6,7 @@ import com.example.workout.database.HistoryDao
 import com.example.workout.database.Schedule
 import com.example.workout.database.ScheduleDao
 import kotlinx.coroutines.launch
+import java.sql.Time
 
 class SchedulerViewModel(private val scheduleDao: ScheduleDao) : ViewModel() {
 
@@ -18,6 +19,14 @@ class SchedulerViewModel(private val scheduleDao: ScheduleDao) : ViewModel() {
      */
     fun insert(schedule: Schedule) = viewModelScope.launch {
         scheduleDao.insert(schedule)
+    }
+
+    fun update(id : Int, exercise_type : String, date: String, timeStart: Time, timeFinish: Time, repeat: String?, autoTrack: Boolean, measure: Float) = viewModelScope.launch {
+        scheduleDao.update(id , exercise_type, date, timeStart, timeFinish, repeat, autoTrack, measure)
+    }
+
+    fun delete(id: Int) = viewModelScope.launch {
+        scheduleDao.delete(id)
     }
 
 //    fun historyByDates() = viewModelScope.launch {

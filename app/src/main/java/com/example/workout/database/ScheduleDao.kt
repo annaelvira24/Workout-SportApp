@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import java.sql.Date
+import java.sql.Time
 
 @Dao
 interface ScheduleDao {
@@ -19,6 +20,12 @@ interface ScheduleDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(schedule: Schedule)
+
+    @Query("DELETE FROM schedule_table WHERE id = :id")
+    suspend fun delete(id: Int)
+
+    @Query("UPDATE schedule_table SET exercise_type = :exercise_type, date = :date, time_start = :timeStart, time_finish = :timeFinish, repeat = :repeat, auto_track = :autoTrack,target = :measure WHERE id = :id ")
+    suspend fun update(id : Int, exercise_type : String, date: String, timeStart: Time, timeFinish: Time, repeat: String?, autoTrack: Boolean, measure: Float)
 
     @Query("DELETE FROM schedule_table")
     suspend fun deleteAll()
