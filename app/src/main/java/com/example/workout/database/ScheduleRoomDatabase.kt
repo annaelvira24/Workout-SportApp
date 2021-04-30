@@ -66,11 +66,11 @@ public abstract class ScheduleRoomDatabase : RoomDatabase() {
             val time = Time(System.currentTimeMillis())
             println(time)
             // Add dummy data
-            var schedule = Schedule(0,"Walking", date, time, time, "0100000", false,1000.0f)
-            scheduleDao.insert(schedule)
-
-            schedule = Schedule(0,"Walking", "2021-05-01", time, time, "0100000", true, 2000.0f)
-            scheduleDao.insert(schedule)
+//            var schedule = Schedule(0,"Walking", date, time, time, "0100000", false,1000.0f)
+//            scheduleDao.insert(schedule)
+//
+//            schedule = Schedule(0,"Walking", "2021-05-01", time, time, "0100000", true, 2000.0f)
+//            scheduleDao.insert(schedule)
 
         }
     }
