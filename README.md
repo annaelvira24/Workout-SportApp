@@ -31,6 +31,8 @@ Untuk history cycling, terdapat button untuk melihat maps rute pelacakan lokasi 
 
 * Google Play Service Maps dan Location : digunakan untuk menggunakan google maps pada aplikasi. Justifikasi penggunaannya adalah karena dengan library ini kita dapat memanfaatkan dan memanggil API google maps sehingga bisa digunakan dalam aplikasi.
 
+* Glide : digunakan untuk menampilkan gambar pada card dari sumber url. Justifikasi penggunannya karena penggunaaanya sederhana dan dapat menampilkan gambar yang bersumber dari url
+
 ## Screenshot Aplikasi
 ### Tampilan potrait Sport News<br/>
 <img src = "screenshot/sportnews.png" width="300px"/><br/>
