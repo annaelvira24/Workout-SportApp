@@ -1,8 +1,6 @@
-package com.example.workout.ui.history
+package com.example.workout.ui.scheduler
 
 import androidx.lifecycle.*
-import com.example.workout.database.History
-import com.example.workout.database.HistoryDao
 import com.example.workout.database.Schedule
 import com.example.workout.database.ScheduleDao
 import kotlinx.coroutines.launch

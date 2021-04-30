@@ -20,13 +20,9 @@ class HistoryDetails : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.history_details)
 
-
         val title = this.intent.extras!!.getString("title")
         date = this.intent.extras!!.getString("date").toString()
         dateUnformatted = this.intent.extras!!.getString("dateUnformatted").toString()
-
-
-
 
         setTitle(title);
 
@@ -34,15 +30,12 @@ class HistoryDetails : AppCompatActivity() {
             val frameLayout1 = findViewById<FrameLayout>(R.id.fragmentContainer2)
             var lParams: LinearLayout.LayoutParams? = frameLayout1.getLayoutParams() as LinearLayout.LayoutParams?
             lParams?.weight = 0f
-
         }
+
         supportFragmentManager!!.beginTransaction()
                 .add(R.id.fragmentContainer, HistoryLogFragment(date, dateUnformatted), "HistoryLogFragment").commit()
 
         supportFragmentManager!!.beginTransaction()
                 .add(R.id.fragmentContainer2, EmptyTempFragment(), "HistoryLogFragment").commit()
-
-
-
     }
 }
