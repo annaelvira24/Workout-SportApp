@@ -59,6 +59,7 @@ class HistoryLogFragment2(var history: History ) : Fragment() {
             val button = root.findViewById<Button>(R.id.button_maps)
             button.setOnClickListener{
                 val intent = Intent(activity, Maps::class.java)
+                intent.putExtra("title", "History Logs Routes");
                 intent.putExtra("arrayList", history.track);
                 startActivity(intent)
             }

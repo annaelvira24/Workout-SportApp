@@ -16,9 +16,11 @@ class Maps : AppCompatActivity(), OnMapReadyCallback{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val title = this.intent.extras!!.getString("title")
         listDouble = intent.getSerializableExtra("arrayList") as ArrayList<Double>
         // Retrieve the content view that renders the map.
         setContentView(R.layout.maps)
+        setTitle(title)
 
         // Get the SupportMapFragment and request notification when the map is ready to be used.
         val mapFragment = supportFragmentManager
