@@ -207,9 +207,12 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
             updateTracking(it)
         })
 
+
         TrackerService.pathPoints.observe(viewLifecycleOwner, {
             pathPoints = it
             addLatestPolyline()
+            println(pathPoints)
+//            println(pathPoints[0][0].latitude)
 //            moveCameraToUser()
         })
 
@@ -221,7 +224,6 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
 
         TrackerService.exerciseID.observe(viewLifecycleOwner, {
             updateExerciseID(it)
-            Timber.d("Exercise ID: %s", it)
         })
 
         TrackerService.stepsAmount.observe(viewLifecycleOwner, {
@@ -379,21 +381,26 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
         val timeFinish = Timestamp(System.currentTimeMillis())
         var measure = 0f
 
+        var pathDouble : ArrayList<Double> = ArrayList()
+
+
         println(exerciseType)
 
-        measure = if(exerciseType == "Cycling"){
-            distanceInMeters
+        if(exerciseType == "Cycling"){
+            pathDouble = convertToArrayFloat(pathPoints)
+            measure = distanceInMeters
         } else{
-            stepsAmount.toFloat()
+            measure = stepsAmount.toFloat()
         }
 
-        var history = History(0, exerciseType, date, timeStart, timeFinish, measure)
+        var history = History(0, exerciseType, date, timeStart, timeFinish, measure, pathDouble)
 //        val dateTimestamp = Calendar.getInstance().timeInMillis
 //        var exercise: Exercise = if (exerciseID == 0) {
 //            Exercise(exerciseID, dateTimestamp, distanceInMeters, curTimeInMillis, 0)
 //        } else {
 //            Exercise(exerciseID, dateTimestamp, distanceInMeters, curTimeInMillis, stepsAmount)
 //        }
+
         viewModel.insert(history)
         println("Done saving history")
         stopRun()
@@ -500,6 +507,23 @@ class TrackerFragment : Fragment(R.layout.fragment_tracker), EasyPermissions.Per
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
 
+    }
+
+    private fun convertToArrayFloat(pathPoints : MutableList<Polyline>) : ArrayList<Double>{
+        println("Hiya")
+        println(pathPoints)
+        var pathDouble : MutableList<Double> = ArrayList()
+        for (i in 0 until pathPoints[0].size){
+            pathDouble.add(pathPoints[0][i].latitude)
+            pathDouble.add(pathPoints[0][i].longitude)
+        }
+
+        println(pathDouble.toArrayList())
+        return (pathDouble.toArrayList())
+    }
+
+    private fun <T> List<T>.toArrayList(): ArrayList<T>{
+        return ArrayList(this)
     }
 
 }
