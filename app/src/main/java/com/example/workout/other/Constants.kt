@@ -37,4 +37,5 @@ object Constants {
     const val ACTION_SET_REPETITIVE_EXACT = "ACTION_SET_REPETITIVE_EXACT"
     const val EXERCISE_TYPE = "EXERCISE_TYPE"
     const val TARGET = "TARGET"
+    const val FINISH = "FINISH"
 }

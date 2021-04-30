@@ -16,14 +16,18 @@ class AlarmReceiver: BroadcastReceiver() {
         val timeInMillis = intent.getLongExtra(Constants.EXTRA_EXACT_ALARM_TIME, 0L)
         val exercise_type = intent.getStringExtra(Constants.EXERCISE_TYPE)
         val target = intent.getStringExtra(Constants.TARGET) + if (exercise_type == "Cycling") " km" else " steps"
+        val finish = intent.getLongExtra(Constants.FINISH,0L)
+
 
         when (intent.action) {
             Constants.ACTION_SET_EXACT -> {
+                setDoneAlarm(AlarmService(context),finish,exercise_type)
                 buildNotification(context, "Let's " + exercise_type, target, convertDate(timeInMillis))
             }
 
             Constants.ACTION_SET_REPETITIVE_EXACT -> {
-                setRepetitiveAlarm(AlarmService(context),exercise_type,target)
+                setDoneAlarm(AlarmService(context),finish,exercise_type)
+                setRepetitiveAlarm(AlarmService(context),finish,exercise_type,target)
                 buildNotification(context, "Let's " + exercise_type, target, convertDate(timeInMillis))
             }
         }
@@ -39,12 +43,20 @@ class AlarmReceiver: BroadcastReceiver() {
                 .show()
     }
 
-    private fun setRepetitiveAlarm(alarmService: AlarmService, exercise_type: String, target: String) {
+    private fun setRepetitiveAlarm(alarmService: AlarmService, finish: Long,exercise_type: String, target: String) {
         val cal = Calendar.getInstance().apply {
             this.timeInMillis = timeInMillis + TimeUnit.DAYS.toMillis(7)
             Timber.d("Set alarm for next week same time - ${convertDate(this.timeInMillis)}")
         }
-        alarmService.setRepetitiveAlarm(cal.timeInMillis,exercise_type,target)
+        val calFinish = Calendar.getInstance().apply {
+            this.timeInMillis = finish + TimeUnit.DAYS.toMillis(7)
+            Timber.d("Set alarm for next week same time - ${convertDate(this.timeInMillis)}")
+        }
+        alarmService.setRepetitiveAlarm(cal.timeInMillis,calFinish.timeInMillis ,exercise_type,target)
+    }
+
+    private fun setDoneAlarm(alarmService: AlarmService, finish: Long, exercise_type: String) {
+        alarmService.setDoneAlarm(finish,exercise_type)
     }
 
     private fun convertDate(timeInMillis: Long): String =

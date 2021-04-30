@@ -10,6 +10,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.View
 
@@ -169,18 +170,70 @@ class SchedulerDetails: AppCompatActivity() {
                     val exercise_type = if (isCycling) "Cycling" else "Walking"
                     //handle repeat date null
                     if(choosenDate == "" && repeatValue == 0){
-                        if (time < startTime){
+                        cal.set(
+                            cal.get(Calendar.YEAR),
+                            cal.get(Calendar.MONTH),
+                            cal.get(Calendar.DAY_OF_MONTH),
+                        )
+
+
+                        if (time.time > startTime.time){
                             choosenDate = SimpleDateFormat("yyyy-MM-dd").format(Date(currentTimeMillis()))
+
                         }else{
                             choosenDate = SimpleDateFormat("yyyy-MM-dd").format(Date(currentTimeMillis() + 24 * 3600 * 1000))
+                            cal.add(Calendar.DATE, 1)
                         }
                     }
                     val schedule = Schedule(exercise_type, choosenDate, startTime, finishTime, repeatValue.toString().padStart(7, '0'), autoStarCheckBox.isChecked, targetText.text.toString().toFloat())
                     schedulerViewModel.insert(schedule)
-                    cal.set(Calendar.HOUR_OF_DAY,startTimeSchedulePicker.hour)
-                    cal.set(Calendar.MINUTE, startTimeSchedulePicker.minute)
-                    alarmService.setExactAlarm(cal.timeInMillis,exercise_type,targetText.text.toString())
-                    Toast.makeText(this, "Set Alarm", Toast.LENGTH_SHORT).show()
+                    if(repeatValue==0){
+                        cal.set(Calendar.HOUR_OF_DAY,startTimeSchedulePicker.hour)
+                        cal.set(Calendar.MINUTE, startTimeSchedulePicker.minute)
+                        cal.set(Calendar.SECOND, 0)
+                        println(DateFormat.format("dd/MM/yyyy hh:mm:ss", cal.timeInMillis).toString())
+                        var finishCal = Calendar.getInstance()
+                        finishCal.set(
+                            cal.get(Calendar.YEAR),
+                            cal.get(Calendar.MONTH),
+                            cal.get(Calendar.DAY_OF_MONTH),
+                            finishTimeSchedulePicker.hour,
+                            finishTimeSchedulePicker.minute,
+                            0
+                        )
+                        if (finishTime.time < startTime.time) {
+                            finishCal.add(Calendar.DATE,1)
+                        }
+                        alarmService.setExactAlarm(cal.timeInMillis,finishCal.timeInMillis, exercise_type,targetText.text.toString())
+                        Toast.makeText(this, "Set Alarm", Toast.LENGTH_SHORT).show()
+                    }else{
+                        cal.set(
+                            cal.get(Calendar.YEAR),
+                            cal.get(Calendar.MONTH),
+                            cal.get(Calendar.DAY_OF_MONTH),
+                            startTimeSchedulePicker.hour,
+                            startTimeSchedulePicker.minute,
+                            0
+                        )
+                        if (time.time <= startTime.time){
+                            cal.add(Calendar.DATE,1)
+                        }
+                        var finishCal = Calendar.getInstance()
+                        finishCal.set(
+                            cal.get(Calendar.YEAR),
+                            cal.get(Calendar.MONTH),
+                            cal.get(Calendar.DAY_OF_MONTH),
+                            finishTimeSchedulePicker.hour,
+                            finishTimeSchedulePicker.minute,
+                            0
+                        )
+                        if (finishTime.time < startTime.time) {
+                            finishCal.add(Calendar.DATE,1)
+                        }
+                        alarmService.setRepetitiveAlarmOnDays(cal,finishCal, exercise_type,targetText.text.toString(),repeatValue)
+                    }
+
+
                     finish()
 
                 }catch (e: Exception){
@@ -203,6 +256,7 @@ class SchedulerDetails: AppCompatActivity() {
                         choosenDate = SimpleDateFormat("yyyy-MM-dd").format(Date(currentTimeMillis()))
                     }else{
                         choosenDate = SimpleDateFormat("yyyy-MM-dd").format(Date(currentTimeMillis() + 24 * 3600 * 1000))
+                        cal.add(Calendar.DATE, 1)
                     }
                 }
                 schedulerViewModel.update(id, exercise_type, choosenDate, startTime, finishTime, repeatValue.toString().padStart(7, '0'), autoStarCheckBox.isChecked, targetText.text.toString().toFloat())
