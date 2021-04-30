@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_tracker.*
 import kotlinx.android.synthetic.main.history_logs2.view.*
 import kotlinx.coroutines.launch
 import java.lang.System.currentTimeMillis
+import java.sql.Date
 import java.sql.Time
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -34,6 +35,7 @@ class SchedulerDetails: AppCompatActivity() {
     private val context: Context? = null
     lateinit var nameEditText: EditText
     lateinit var targetText: EditText
+    lateinit var cautionText: TextView
     lateinit var startTimeSchedulePicker : TimePicker
     lateinit var finishTimeSchedulePicker : TimePicker
     lateinit var autoStarCheckBox : CheckBox
@@ -65,6 +67,7 @@ class SchedulerDetails: AppCompatActivity() {
         setContentView(R.layout.scheduler_details)
 
         nameEditText = findViewById(R.id.name)
+        cautionText = findViewById(R.id.cautionText)
         startTimeSchedulePicker =  findViewById(R.id.startTimeSchedule);
         startTimeSchedulePicker.setIs24HourView(true);
         finishTimeSchedulePicker =  findViewById(R.id.finishTimeSchedule);
@@ -99,6 +102,7 @@ class SchedulerDetails: AppCompatActivity() {
         setTitle(title);
 
         if(intent.hasExtra("id")){
+            addButton.setText("Cancel")
             id = intent.getIntExtra("id",-1)
             isCycling = intent.getStringExtra("exercise_type") == "Cycling"
             if(!isCycling){
@@ -112,7 +116,9 @@ class SchedulerDetails: AppCompatActivity() {
             startTimeSchedulePicker.minute = intent.getIntExtra("timeStartMinute",0)
             finishTimeSchedulePicker.hour = intent.getIntExtra("timeFinishHour",0)
             finishTimeSchedulePicker.minute = intent.getIntExtra("timeFinishMinute",0)
-            textview_date.setText(intent.getStringExtra("date"))
+            if(intent.getStringExtra("date")!= "") {
+                textview_date.setText(intent.getStringExtra("date"))
+            }
             repeatValue = intent.getStringExtra("repeat").toInt()
             nameEditText.setText(id.toString())
             if(repeatValue>=1000000){
@@ -136,36 +142,65 @@ class SchedulerDetails: AppCompatActivity() {
             if(repeatValue%10>=1){
                 sat.setTextColor(checkedTextColor)
             }
-
-
-
         }else{
             updateButton.visibility = View.GONE
             deleteButton.visibility = View.GONE
+            val params = addButton?.layoutParams as LinearLayout.LayoutParams
+            params.width = LinearLayout.LayoutParams.MATCH_PARENT
+            params.height = LinearLayout.LayoutParams.WRAP_CONTENT
+            addButton?.layoutParams = params
         }
 
         addButton.setOnClickListener {
             //To Do
-            val time = Time(currentTimeMillis())
-            val startTime = Time(startTimeSchedulePicker.hour,startTimeSchedulePicker.minute,0)
-            val finishTime = Time(finishTimeSchedulePicker.hour,finishTimeSchedulePicker.minute,0)
-            val exercise_type = if (isCycling) "Cycling" else "Walking"
-
-
-
-//            val schedule = Schedule(exercise_type, choosenDate, time  , time, repeatValue.toString(), autoStarCheckBox.isChecked,targetText.text.toString().toFloat())
-            val schedule = Schedule(exercise_type, choosenDate, startTime  , finishTime, repeatValue.toString().padStart(7,'0'), autoStarCheckBox.isChecked,targetText.text.toString().toFloat())
-            schedulerViewModel.insert(schedule)
-            finish()
+            if(id != -1){
+                finish()
+            }else{
+                try{
+                    targetText.text.toString().toFloat()
+                    val time = Time(currentTimeMillis())
+                    val startTime = Time(startTimeSchedulePicker.hour, startTimeSchedulePicker.minute, 0)
+                    val finishTime = Time(finishTimeSchedulePicker.hour, finishTimeSchedulePicker.minute, 0)
+                    val exercise_type = if (isCycling) "Cycling" else "Walking"
+                    //handle repeat date null
+                    if(choosenDate == "" && repeatValue == 0){
+                        if (time < startTime){
+                            choosenDate = SimpleDateFormat("yyyy-MM-dd").format(Date(currentTimeMillis()))
+                        }else{
+                            choosenDate = SimpleDateFormat("yyyy-MM-dd").format(Date(currentTimeMillis()+24*3600*1000))
+                        }
+                    }
+                    val schedule = Schedule(exercise_type, choosenDate, startTime, finishTime, repeatValue.toString().padStart(7, '0'), autoStarCheckBox.isChecked, targetText.text.toString().toFloat())
+                    schedulerViewModel.insert(schedule)
+                    finish()
+                }catch (e : Exception){
+                    cautionText.visibility = View.VISIBLE
+                }
+            }
         }
+
         updateButton.setOnClickListener {
             //To Do
-            val time = Time(currentTimeMillis())
-            val startTime = Time(startTimeSchedulePicker.hour,startTimeSchedulePicker.minute,0)
-            val finishTime = Time(finishTimeSchedulePicker.hour,finishTimeSchedulePicker.minute,0)
-            val exercise_type = if (isCycling) "Cycling" else "Walking"
-            schedulerViewModel.update(id,exercise_type, choosenDate, startTime  , finishTime, repeatValue.toString().padStart(7,'0'), autoStarCheckBox.isChecked,targetText.text.toString().toFloat())
-            finish()
+            try {
+                targetText.text.toString().toFloat()
+                val time = Time(currentTimeMillis())
+                val startTime = Time(startTimeSchedulePicker.hour, startTimeSchedulePicker.minute, 0)
+                val finishTime = Time(finishTimeSchedulePicker.hour, finishTimeSchedulePicker.minute, 0)
+                val exercise_type = if (isCycling) "Cycling" else "Walking"
+                //handle repeat date null
+                if(choosenDate == "" && repeatValue == 0){
+                    if (time < startTime){
+                        choosenDate = SimpleDateFormat("yyyy-MM-dd").format(Date(currentTimeMillis()))
+                    }else{
+                        choosenDate = SimpleDateFormat("yyyy-MM-dd").format(Date(currentTimeMillis()+24*3600*1000))
+                    }
+                }
+                schedulerViewModel.update(id, exercise_type, choosenDate, startTime, finishTime, repeatValue.toString().padStart(7, '0'), autoStarCheckBox.isChecked, targetText.text.toString().toFloat())
+                finish()
+            }catch (e : Exception){
+                cautionText.visibility = View.VISIBLE
+            }
+
         }
         deleteButton.setOnClickListener {
             //To Do
