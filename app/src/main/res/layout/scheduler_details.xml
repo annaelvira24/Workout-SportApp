@@ -178,15 +178,6 @@
 
 
     <EditText
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginTop="15dp"
-        android:autofillHints=""
-        android:hint="Exercise Name"
-        android:inputType="text" />
-
-    <EditText
         android:id="@+id/target"
         android:layout_width="match_parent"
         android:layout_height="61dp"
@@ -202,7 +193,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="102dp"
         android:orientation="horizontal">
 
         <TextView

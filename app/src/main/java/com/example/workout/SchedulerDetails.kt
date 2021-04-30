@@ -66,7 +66,7 @@ class SchedulerDetails: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.scheduler_details)
 
-        nameEditText = findViewById(R.id.name)
+
         cautionText = findViewById(R.id.cautionText)
         startTimeSchedulePicker =  findViewById(R.id.startTimeSchedule);
         startTimeSchedulePicker.setIs24HourView(true);
